@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Webpage Title -->
+  <title>myproject</title>
+
+  <link href="/css/comment.css?1577779699000" rel="stylesheet" type="text/css" />
+  <link href="/css/nstore_util.css?1580452906000" rel="stylesheet" type="text/css" />
+  <link href="/css/nstore_cont.css?1580452906000" rel="stylesheet" type="text/css" />
+  <link href="/css/skip/nstore_js.css?1577779699000" rel="stylesheet" type="text/css" />
+  <link href="/css/nstore.css?1581574785000" rel="stylesheet" type="text/css" />
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <!-- 구글폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
+  <script type="text/javascript">
+
+
+
+  </script>
+  <script type="text/javascript">
+    function Show() {
+      if (document.all.app.style.display == "none") { document.all.app.style.display = "block"; }
+      else { document.all.app.style.display = "none"; }
+    }
+
+
+
+
+
+
+
+  </script>
+
+  <style>
+    .strong {
+      font-weight: bold;
+      font-style: italic;
+      font-size: 70px;
+      font-family: sans-serif;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+
+    .card-group {
+      margin-left: 130px;
+      margin-right: 130px;
+    }
+
+    .maintext {
+
+      text-align: center;
+    }
+
+    * {
+      font-family: 'Titillium Web', sans-serif;
+      font-family: 'Bitter', serif;
+      font-family: 'Single Day', cursive;
+      font-family: 'Hi Melody', cursive;
+      font-family: 'Jua', sans-serif;
+      font-family: 'Nanum Brush Script', cursive;
+      font-family: 'Do Hyeon', sans-serif;
+    }
+    .info{margin-left: 400px; margin-right: 400px;}
+  </style>
+</head>
+
+<body>
+  <div class="maintext">
+    <h1><span class="strong">NAVERSERIES</span> 리뷰창고</h1>
+  </div>
+  <br>
+  <br>
+  <span id=app style=display:none>
+    <div class="info">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">제목</span>
+        </div>
+        <input type="text" class="form-control" id="title" aria-describedby="basic-addon3">
+      </div>
+    
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">리뷰</span>
+        </div>
+        <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30" rows="5"
+          placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+      </div>
+      <div class="order">
+        <button onclick="make_review()" type="button" class="btn btn-primary">리뷰 작성하기</button>
+      </div>
+    </div>
+  </span>
+
+
+
+
+
+
+  <br>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">장르 /</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+      aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="">로맨스 /</a>
+          <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:5500/templates/index2.html">로판 /</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:5500/templates/index3.html">판타지 /</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:5500/templates/index4.html">무협</a>
+        </li>
+
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+    </div>
+
+
+  </nav>
+  <br><br>
+  <div class="card-group">
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20141010_110/pocket_1412915784499GktmY_JPEG/cloud.jpg?type=m260"
+        width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          구름이 그린달빛
+        </h5><br><br>
+        <p class="card-text">질리고 질릴 만한 조선시대 배경에 남장여자가 주인공인데 주인공인 라온이 환관이 된다는 설정이 새롭습니다. 물론 개별 에피소드들은 조금은 평이한 것들도 없지는
+          않지만 라온이 환관으로서 살아남기 위해서 보여주는 노력들은 독자들의 흥미를 끌만한 충분한 사유가 됩니다.
+          조선시대를 배경으로 한 달달한 로맨스 소설을 원하시는 분께는 강추합니다!! <a
+            href=https://series.naver.com/novel/detail.nhn?productNo=1200383>보러 가기</a>
+        </p>
+
+        <button onclick="Show()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20160216_216/pocket_14556178273891qpTh_JPEG/h300.jpg?type=m260"
+        width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          허니허니웨딩
+        </h5><br><br>
+        <p class="card-text"> 작가의 전 작품을 보지 않은 필자의 입장에서는 주인공보다 주변 인물들이 더 매력적으로 와닿은 것이 아쉬웠다. 해수와 같은 주인공은 요즘 시대와는 맞지 않다고
+          본다.
+          글을 읽는 독자는 작가가 의도하지 않더라도 대부분 주인공에게 몰입을 하기 때문에, 답답하게 느껴질 수도 있을 것이라는 생각이 들었다. <a
+            href=https://series.naver.com/novel/detail.nhn?productNo=1924178> 보러 가기</a>
+
+        </p>
+        <br>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20150202_224/pocket_14228417795267p3Ua_JPEG/%BF%F8%C7%CF%B4%C2_%B0%C7_%B3%CA_%C7%CF%B3%AA_%C7%A5%C1%F6%28%C0%CE%C5%B8%C0%CC%C6%B2%29.jpg?type=m260"
+        width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          원하는건 너하나
+        </h5><br><br>
+        <p class="card-text">신분 차이로 인한 냉대한 시선과 찬밥 취급을 받아도 반응을 크게 보이지 않는 여주인공 은율의 성격이 초반에는 답답하게 느껴진다. 하지만 계속 읽어가다 보면 어느
+          정도는 해소가 되고 후반부로 갈수록 달달해지는 게 꿀단지에 빠져버린 듯한 착각이 들게 한다. 20대 중후반과 30대 초반의 독자라면 몰입이 더 잘 되어 더 재미있게 읽을 수 있을 것이다.<a
+            href=https://series.naver.com/novel/detail.nhn?productNo=1729133> 보러 가기</a>
+        </p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+
+
+      </div>
+
+    </div>
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20160328_97/pocket_1459135510506rEcLr_JPEG/night_mirage2.jpg?type=m260"
+        width="173" height="300" width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          해시의 신루
+        </h5><br><br>
+        <p class="card-text">조선시대 세종대왕의 아들이자 훗날 ‘문종’이 되는 세자 ‘이향’과 미래를 보는 여인 ‘해루’가 펼치는 이야기들을 담고 있다. 작가의 두드러진
+          ‘감각’이 돋보이는 소설로 요즘 독자들이 역사 로맨스 소설에서 원하는 바가 무엇인지 정확히 알고 그를 잘 활용하는 느낌이다. 우리가 역사 속에서 익히 들어오던 인물들의 이름이 아주 심심치 않게
+          등장해 실제 역사와 비교해 상상해 보는 재미도 있다. <a href=https://series.naver.com/novel/detail.nhn?productNo=1729133> 보러 가기</a>
+        </p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+
+
+      </div>
+    </div>
+
+  </div>
+  <br>
+  <div class="card-group">
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20160104_43/pocket_1451884589985ToRmk_JPEG/bigcover.jpg?type=m260"
+        width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          위험한 신혼부부
+        </h5><br><br>
+        <p class="card-text"> 천진난만한 아내 미사와 비밀을 간직한 남편의 신혼은이 어떻게 이루어 지게 되는지를 다룬 작품이다. 요근래 드라마를 보면 타임슬립처럼 예전으로 돌아가는 내용들이나,
+          과거 현재를 왔다 갔다하는 장르를 많이 접할 수 있을 것이다. 이 소설은 뒤에 나오는 외전까지도 너무 재밌있게 보았던 기억이다. <a
+            href=https://series.naver.com/novel/detail.nhn?productNo=2109424>보러 가기</a></p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+
+
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20160525_297/pocket_1464180572089FvQGi_JPEG/-.jpg?type=m260"
+        width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          조선연애실록
+        </h5><br><br>
+        <p class="card-text">남장여자, 예기치 않은 이별 후 재회 등 흔히 접하는 클리셰가 있더라도 지루할 틈없는 전개는 긴 분량을 무색케 했다. 기대치를 충족시키지 않는 실망스러운 필력에
+          별점 반개를 떼어냈지만, 나처럼 까탈스럽지 않다면 꿀잼이라고 여길 것이다. 하나 더, 주변인물에 대한 불친절한 전개 때문에 외전을 갈구할테지만, 상상의 나래를 펼치는 게 어렵지 않은 당신이라면 외전
+          따위는 필요 없음.<a href=https://series.naver.com/novel/detail.nhn?productNo=2109424>보러 가기</a></p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+
+
+
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20150130_228/pocket_1422607142428nfFPd_JPEG/1.jpg?type=m260"
+        width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          법대로 사랑하라
+        </h5><br>
+        <p class="card-text">법에 관련된 소설이지만 머리가 아프지 않다는 것이 이 소설의 최고 장점이라고 할 수 있어요. 로맨스라는 장르에 충실하면서도 배경으로 잡은 법 관련 얘기들도 허투로
+          쓰시지 않으셔서 읽는 내내 대박이란 말 밖에 할 수 없었어요. 글을 엄청 잘 쓰시는 변호사가 쓴 소설이라고 생각하고 읽어도 납득이 될 정도인데 머리가 어지럽지 않고 또 법 관련 내용으로 너무
+          치우친다거나 하지 않아서 정말 좋았습니다!!<a href=https://series.naver.com/novel/detail.nhn?productNo=2109424>보러 가기</a></p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+
+
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top"
+        src="https://comicthumb-phinf.pstatic.net/20150805_225/pocket_1438765168534ppRRW_JPEG/cover.jpg?type=m260"
+        width="173" height="300" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          너에게로 중독
+        </h5><br>
+        <p class="card-text">로맨스 소설이 갖춰야 할 자연스러운 감정선과 탄탄한 세계관을 적절히 섞어놓음으로써 소설 후반부로 갈수록 계급 사회의 틀을 벗어난 등장인물들의 사랑 방식을 보여준다.
+          진부할 수 있는 초능력 소재이지만, 캐릭터의 매력을 살리고, 세계관을 탄탄히 쌓음으로써 극복함. <a
+            href=https://series.naver.com/novel/detail.nhn?productNo=1892461> 보러 가기</a>
+        </p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+
+
+
+      </div>
+    </div>
+  </div>
+  <br>
+
+</body>
