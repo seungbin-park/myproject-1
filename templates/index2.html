@@ -34,27 +34,110 @@
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
     <style>
-        a {
-            text-decoration: underline;
-        }
+       .strong {
+      font-weight: bold;
+      font-style: italic;
+      font-size: 70px;
+      font-family: sans-serif;
+    }
 
+    a {
+      text-decoration: underline;
+    }
 
+    .card-group {
+      margin-left: 130px;
+      margin-right: 130px;
+    }
 
-        .card-group {height: 25cm;
-            margin-left: 130px;
-            margin-right: 130px;
-        }
+    .maintext {
 
-        h1 {
-            margin-left: 130px;
-            margin-right: 130px;
-        }
+      text-align: center;
+    }
+
+    * {
+      font-family: 'Titillium Web', sans-serif;
+      font-family: 'Bitter', serif;
+      font-family: 'Single Day', cursive;
+      font-family: 'Hi Melody', cursive;
+      font-family: 'Jua', sans-serif;
+      font-family: 'Nanum Brush Script', cursive;
+      font-family: 'Do Hyeon', sans-serif;
+    }
+    .info{margin-left: 400px; margin-right: 400px;}
+  </style>
     </style>
 </head>
 
 <body>
+    <div class="maintext">
+        <h1><span class="strong">NAVERSERIES</span> 리뷰창고</h1>
+      </div>
+      <br>
+      <br>
+      <span id=app style=display:none>
+        <div class="info">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">제목</span>
+            </div>
+            <input type="text" class="form-control" id="title" aria-describedby="basic-addon3">
+          </div>
+        
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">리뷰</span>
+            </div>
+            <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30" rows="5"
+              placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+          </div>
+          <div class="order">
+            <button onclick="make_review()" type="button" class="btn btn-primary">리뷰 작성하기</button>
+          </div>
+        </div>
+      </span>
+    
+    
+    
+    
+    
+    
+      <br>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">장르 /</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="">로맨스 /</a>
+              <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://127.0.0.1:5500/templates/index2.html">로판 /</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://127.0.0.1:5500/templates/index3.html">판타지 /</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://127.0.0.1:5500/templates/index4.html">무협</a>
+            </li>
+    
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+    
+        </div>
+    
+    
+      </nav>
     <br>
-    <h1><strong>로맨스&판타지</strong></h1>
+   
     <br>
     <br>
 
@@ -67,10 +150,8 @@
                 <h5 class="card-title"> 악마라고 불러다오</h5><br><br>
                 <p class="card-text">오래 품어왔던 사랑에 지쳐갈 때쯤 나타난 남자는 단단했던 이나의 마음을 흔들어놓는다. 좋아하는 건 아니라고 하면서 눈을 맞추라고 하질 않나,
                     다른 여자는 안되고 자신만 된다고 하질 않나, 내 집에 들인 여자는 니가 처음이라면서 좋아하냐고 물어보면 또 아니라는 당췌 속을 알 수 없는 남자. 독자인
-                    나는 다 알고 있기에 그저 재미있기만 하지만 모르는 이나는 그 상황이 얼마나 황당했을까 생각하면서 읽다보니 더 즐거웠다.<a
-                        href=https://series.naver.com/novel/detail.nhn?productNo=1550607> 보러 가기</a>
-
-                </p>  <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                    나는 다 알고 있기에 그저 재미있기만 하지만 모르는 이나는 그 상황이 얼마나 황당했을까 생각하면서 읽다보니 더 즐거웠다.
+                </p>  <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -86,9 +167,9 @@
                 <h5 class="card-title">우아한 짐승의 세계</h5><br><br>
                 <p class="card-text"> 스토리 라인 자체가 너무 뻔하고 별다른 내용도 없고 그렇다고 주인공들의 감정선이 깊고 섬세한 것도 아니고 문장력이 수려한 것도 아니에요. 하나같이
                     다 어설픕니다. 주인공들 매력도 없고요. 클리셰를 위한 장치들은 있지만 작가가 그걸 잘 활용을 못합니다. 캐릭터의 대립구조도 살리지 못하고 등장인물의 성격도 1차원적이고 모든게 다
-                    평면적이에요ㅡㅡ<a href=https://series.naver.com/novel/detail.nhn?productNo=1401611> 보러 가기</a>
+                    평면적이에요ㅡㅡ
 
-                </p>  <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                </p>  <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -103,10 +184,9 @@
                 <p class="card-text">손세희 작가님의 글은 항상 생각지도 못한 부분에서 아!! 하게 해주는 포인트랄까, 그런게 있어서 개인적으로 굉장히 좋아한다. 또 점점 갈피가 잡혀가는
                     스토리 구상도 이번에는 개인적으로 참 잘 되었다는 생각을 하며 읽었는데 특히 후반으로 갈 수록 그랬다.
                     세계관도 탄탄했다. 전혀 거슬리지 않았고, 또 왕족의 특이한 체질.축복에 관한 설정도 흥미로웠다.
-                    다만 탄탄히 풀어가다보니, 연재분에서는 등장인물들의 사적인 이야기(연애, 사랑, 결혼 후..) 그런 전형적인 로맨스 부분이 부족해서 안타까웠달까.<a
-                        href=https://series.naver.com/novel/detail.nhn?productNo=2350385> 보러 가기</a>
+                    다만 탄탄히 풀어가다보니, 연재분에서는 등장인물들의 사적인 이야기(연애, 사랑, 결혼 후..) 그런 전형적인 로맨스 부분이 부족해서 안타까웠달까.
 
-                </p>  <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                </p>  <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -123,10 +203,9 @@
                     이 소설은 신선하게 이혼을 하자마자 재혼하는 황후의 시원함을 볼 수 있다.
 
                     소설 첫 장면부터 이혼하자마자 재혼승인을 요구하는 황후 나비에! 이 장면만 믿고 초반~중반의 고구마를 견딜 수 있었다. ㅋㅋㅋㅋ 네이버 시리즈물에서 워낙 인기가 있어서 그런지 보통
-                    소장은 쿠키1개인데 재혼황후는 쿠키가 3개 ㅠㅠ 열씸히 쿠키 굽지만 3개는 넘 비싸! 대여권은 1개라 다행이지만 사이다구간은 소장하고싶은 내맘 ㅋㅋㅋㅋ<a
-                        href=https://series.naver.com/novel/detail.nhn?productNo=3713078> 보러 가기</a>
+                    소장은 쿠키1개인데 재혼황후는 쿠키가 3개 ㅠㅠ 열씸히 쿠키 굽지만 3개는 넘 비싸! 대여권은 1개라 다행이지만 사이다구간은 소장하고싶은 내맘 ㅋㅋㅋㅋ
 
-                </p>  <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                </p>  <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -144,9 +223,8 @@
                 <h5 class="card-title">백작과의 기묘한 산책</h5><br>
                 <p class="card-text"> 제국대학 시절 첫사랑이었던 미하엘이 국장으로 있는 특별수사국에서 고국분투하며 예나의 숨겨진 재능과 과거가 밝혀지고...제국 공적 1호 용공과 싸우는
                     기관에서 일과 사랑 두가지를 성취하는 남녀의 이야기. 상냥하고 여린 것 같아 보이지만 뚜껑 열려서 저돌적으로 변하는
-                    여주인공 강예나가 굉장히 매력젹이고 취행저격이다.<a href=https://series.naver.com/novel/detail.nhn?productNo=1751095> 보러
-                        가기</a>
-                     </p>  <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                    여주인공 강예나가 굉장히 매력젹이고 취행저격이다. 
+                     </p>  <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -162,9 +240,8 @@
                     됩니다. 그러다가 까칠한
                     수의사인 남주를 만나게 됩니다. 그렇게 초반에는 티격태격거리다가 서로에게 빠져드는 로맨스입니다. 여주가 고양이일 때 스토리가 재밌어요. 좀 아쉬운건 막판에 여주가 원래 몸으로
                     돌아가게 되면서 남주가 여주를 찾아헤매는 내용이 많이 짧았다는 거죠. 너무 빨리 찾아서
-                    제가 허무할 정도. 그래도 달달하니 괜찮은 작품이었습니다ㅎㅎ<a
-                        href=https://series.naver.com/novel/detail.nhn?productNo=1776400> 보러 가기</a>
-                </p>  <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                    제가 허무할 정도. 그래도 달달하니 괜찮은 작품이었습니다ㅎㅎ
+                </p>  <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -181,9 +258,9 @@
 
                     세상을 그만 살려고 높은 곳에서 뛰어내리는 순간 사빈의 영혼과 다른 세계에 있던 순수혈통 마녀와 영혼이 바뀌게 되고 왕의 짝을 찾는 곳에 집안의 결정으로
                     어쩔 수 없이 참여하지만 생각지도 못한 엄청난 능력과 자신의 과거를 알게되는 여주인공. 여주인공과 남주인공의 케미도 너무 좋고 악마들을 너무 귀엽게 그려서 좋더라고요 ^^ 내용도
-                    신선하고 여러분들께 추천드려요!!<a href=https://series.naver.com/novel/detail.nhn?productNo=1279606> 보러 가기</a>
+                    신선하고 여러분들께 추천드려요!!
                 </p>
-                <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -198,8 +275,8 @@
                 <p class="card-text">솔직히 말하자면 개인적으로는 제게 비호에 가까운 작가님이에요. 전작들을 통해 저와는 잘 안 맞는 걸 느꼈거든요.
                     작품의 재미를 못 느꼈다는 게 아니라 작품 속 느껴지는 인물들의 관계나 도덕성? 이런 점들이 미묘하게 저와는 안 맞아 좀 불편했던 느낌. 그래서 이런저런 이유로
                     평이 좋고 유명한 작품에 이벤트까지 해서 구매를 했지만 개인적으로 현로만 주로 읽기도 하고. 론 이런 류의 소재는 그래도 좋아하는 편이지만 재탕을 할 만한 임팩트를 저는 받지 못
-                    했네요.<a href=https://series.naver.com/novel/detail.nhn?productNo=4934286> 보러 가기</a> </p>
-                <button type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+                    했네요. </p>
+                <button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 

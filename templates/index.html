@@ -36,6 +36,15 @@
 
   </script>
   <script type="text/javascript">
+    $(".star_rating a").click(function () {
+
+      $(this).parent().children("a").removeClass("on");
+
+      $(this).addClass("on").prevAll("a").addClass("on");
+
+      return false;
+
+    });
     function Show() {
       if (document.all.app.style.display == "none") { document.all.app.style.display = "block"; }
       else { document.all.app.style.display = "none"; }
@@ -50,6 +59,35 @@
   </script>
 
   <style>
+    .star_rating {
+      font-size: 0;
+      letter-spacing: -4px;
+    }
+
+    .star_rating a {
+
+      font-size: 22px;
+
+      letter-spacing: 0;
+
+      display: inline-block;
+
+      margin-left: 5px;
+
+      color: #ccc;
+
+      text-decoration: none;
+
+    }
+
+    .star_rating a:first-child {
+      margin-left: 0;
+    }
+
+    .star_rating a.on {
+      color: #777;
+    }
+
     .strong {
       font-weight: bold;
       font-style: italic;
@@ -80,7 +118,11 @@
       font-family: 'Nanum Brush Script', cursive;
       font-family: 'Do Hyeon', sans-serif;
     }
-    .info{margin-left: 400px; margin-right: 400px;}
+
+    .info {
+      margin-left: 400px;
+      margin-right: 400px;
+    }
   </style>
 </head>
 
@@ -98,7 +140,7 @@
         </div>
         <input type="text" class="form-control" id="title" aria-describedby="basic-addon3">
       </div>
-    
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text">리뷰</span>
@@ -107,7 +149,7 @@
           placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
       </div>
       <div class="order">
-        <button onclick="make_review()" type="button" class="btn btn-primary">리뷰 작성하기</button>
+        <button onclick="make_review()" type="button" class="btn btn-primary">리뷰 보기</button>
       </div>
     </div>
   </span>
@@ -160,11 +202,23 @@
       <div class="card-body">
         <h5 class="card-title">
           구름이 그린달빛
-        </h5><br><br>
+        </h5>
+        <p class="star_rating">
+
+          <a href="#" class="on">★</a>
+
+          <a href="#" class="on">★</a>
+
+          <a href="#" class="on">★</a>
+
+          <a href="#">★</a>
+
+          <a href="#">★</a>
+
+        </p>
         <p class="card-text">질리고 질릴 만한 조선시대 배경에 남장여자가 주인공인데 주인공인 라온이 환관이 된다는 설정이 새롭습니다. 물론 개별 에피소드들은 조금은 평이한 것들도 없지는
           않지만 라온이 환관으로서 살아남기 위해서 보여주는 노력들은 독자들의 흥미를 끌만한 충분한 사유가 됩니다.
-          조선시대를 배경으로 한 달달한 로맨스 소설을 원하시는 분께는 강추합니다!! <a
-            href=https://series.naver.com/novel/detail.nhn?productNo=1200383>보러 가기</a>
+          조선시대를 배경으로 한 달달한 로맨스 소설을 원하시는 분께는 강추합니다!!
         </p>
 
         <button onclick="Show()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
@@ -181,12 +235,10 @@
         </h5><br><br>
         <p class="card-text"> 작가의 전 작품을 보지 않은 필자의 입장에서는 주인공보다 주변 인물들이 더 매력적으로 와닿은 것이 아쉬웠다. 해수와 같은 주인공은 요즘 시대와는 맞지 않다고
           본다.
-          글을 읽는 독자는 작가가 의도하지 않더라도 대부분 주인공에게 몰입을 하기 때문에, 답답하게 느껴질 수도 있을 것이라는 생각이 들었다. <a
-            href=https://series.naver.com/novel/detail.nhn?productNo=1924178> 보러 가기</a>
-
+          글을 읽는 독자는 작가가 의도하지 않더라도 대부분 주인공에게 몰입을 하기 때문에, 답답하게 느껴질 수도 있을 것이라는 생각이 들었다.
         </p>
         <br>
-        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
       </div>
@@ -200,10 +252,10 @@
           원하는건 너하나
         </h5><br><br>
         <p class="card-text">신분 차이로 인한 냉대한 시선과 찬밥 취급을 받아도 반응을 크게 보이지 않는 여주인공 은율의 성격이 초반에는 답답하게 느껴진다. 하지만 계속 읽어가다 보면 어느
-          정도는 해소가 되고 후반부로 갈수록 달달해지는 게 꿀단지에 빠져버린 듯한 착각이 들게 한다. 20대 중후반과 30대 초반의 독자라면 몰입이 더 잘 되어 더 재미있게 읽을 수 있을 것이다.<a
-            href=https://series.naver.com/novel/detail.nhn?productNo=1729133> 보러 가기</a>
+          정도는 해소가 되고 후반부로 갈수록 달달해지는 게 꿀단지에 빠져버린 듯한 착각이 들게 한다. 20대 중후반과 30대 초반의 독자라면 몰입이 더 잘 되어 더 재미있게 읽을 수 있을 것이다.보러
+          가기</a>
         </p>
-        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -220,9 +272,9 @@
         </h5><br><br>
         <p class="card-text">조선시대 세종대왕의 아들이자 훗날 ‘문종’이 되는 세자 ‘이향’과 미래를 보는 여인 ‘해루’가 펼치는 이야기들을 담고 있다. 작가의 두드러진
           ‘감각’이 돋보이는 소설로 요즘 독자들이 역사 로맨스 소설에서 원하는 바가 무엇인지 정확히 알고 그를 잘 활용하는 느낌이다. 우리가 역사 속에서 익히 들어오던 인물들의 이름이 아주 심심치 않게
-          등장해 실제 역사와 비교해 상상해 보는 재미도 있다. <a href=https://series.naver.com/novel/detail.nhn?productNo=1729133> 보러 가기</a>
+          등장해 실제 역사와 비교해 상상해 보는 재미도 있다.
         </p>
-        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -241,9 +293,8 @@
           위험한 신혼부부
         </h5><br><br>
         <p class="card-text"> 천진난만한 아내 미사와 비밀을 간직한 남편의 신혼은이 어떻게 이루어 지게 되는지를 다룬 작품이다. 요근래 드라마를 보면 타임슬립처럼 예전으로 돌아가는 내용들이나,
-          과거 현재를 왔다 갔다하는 장르를 많이 접할 수 있을 것이다. 이 소설은 뒤에 나오는 외전까지도 너무 재밌있게 보았던 기억이다. <a
-            href=https://series.naver.com/novel/detail.nhn?productNo=2109424>보러 가기</a></p>
-        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+          과거 현재를 왔다 갔다하는 장르를 많이 접할 수 있을 것이다. 이 소설은 뒤에 나오는 외전까지도 너무 재밌있게 보았던 기억이다. </p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -259,8 +310,8 @@
         </h5><br><br>
         <p class="card-text">남장여자, 예기치 않은 이별 후 재회 등 흔히 접하는 클리셰가 있더라도 지루할 틈없는 전개는 긴 분량을 무색케 했다. 기대치를 충족시키지 않는 실망스러운 필력에
           별점 반개를 떼어냈지만, 나처럼 까탈스럽지 않다면 꿀잼이라고 여길 것이다. 하나 더, 주변인물에 대한 불친절한 전개 때문에 외전을 갈구할테지만, 상상의 나래를 펼치는 게 어렵지 않은 당신이라면 외전
-          따위는 필요 없음.<a href=https://series.naver.com/novel/detail.nhn?productNo=2109424>보러 가기</a></p>
-        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+          따위는 필요 없음.</p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -277,8 +328,8 @@
         </h5><br>
         <p class="card-text">법에 관련된 소설이지만 머리가 아프지 않다는 것이 이 소설의 최고 장점이라고 할 수 있어요. 로맨스라는 장르에 충실하면서도 배경으로 잡은 법 관련 얘기들도 허투로
           쓰시지 않으셔서 읽는 내내 대박이란 말 밖에 할 수 없었어요. 글을 엄청 잘 쓰시는 변호사가 쓴 소설이라고 생각하고 읽어도 납득이 될 정도인데 머리가 어지럽지 않고 또 법 관련 내용으로 너무
-          치우친다거나 하지 않아서 정말 좋았습니다!!<a href=https://series.naver.com/novel/detail.nhn?productNo=2109424>보러 가기</a></p>
-        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+          치우친다거나 하지 않아서 정말 좋았습니다!!</p>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -293,10 +344,9 @@
           너에게로 중독
         </h5><br>
         <p class="card-text">로맨스 소설이 갖춰야 할 자연스러운 감정선과 탄탄한 세계관을 적절히 섞어놓음으로써 소설 후반부로 갈수록 계급 사회의 틀을 벗어난 등장인물들의 사랑 방식을 보여준다.
-          진부할 수 있는 초능력 소재이지만, 캐릭터의 매력을 살리고, 세계관을 탄탄히 쌓음으로써 극복함. <a
-            href=https://series.naver.com/novel/detail.nhn?productNo=1892461> 보러 가기</a>
+          진부할 수 있는 초능력 소재이지만, 캐릭터의 매력을 살리고, 세계관을 탄탄히 쌓음으로써 극복함. 보러 가기</a>
         </p>
-        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 작정하기</button>
+        <button onclick="hi()" type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
