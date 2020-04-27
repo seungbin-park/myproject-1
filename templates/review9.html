@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>악마라고 불러다오 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'악마라고 불러다오'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>샷추가
+                        </td>
+                        <td> 오래 품어왔던 사랑에 지쳐갈 때쯤 나타난 남자는 단단했던 이나의 마음을 흔들어놓는다. 좋아하는 건 아니라고 하면서 눈을 맞추라고 하질 않나,
+                            다른 여자는 안되고 자신만 된다고 하질 않나, 내 집에 들인 여자는 니가 처음이라면서 좋아하냐고 물어보면 또 아니라는 당췌 속을 알 수 없는 남자. 독자인
+                            나는 다 알고 있기에 그저 재미있기만 하지만 모르는 이나는 그 상황이 얼마나 황당했을까 생각하면서 읽다보니 더 즐거웠다.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>서강준사랑해
+                        </td>
+                        <td> 책으로 6년째..보고있습니다... 이거 이길만한 소설 찾은적없음 진심 이거 보면 과몰입 오지게하고 세상에 악마가 있을수도있다는 상상함
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>류하
+                        </td>
+                        <td>유현이...그냥 솔로로 남겨줘요.. 아니면 차라리 천사랑 붙여줘요!!! 아.. 수미는 진짜 읽을수록 몰입 안 되고 거부감이 생겨요...
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>지호지연
+
+                        </td>
+                        <td> 소장하고싶을정도로 길고도 빠져들었던소설~ 안테님을 좋아라해서 읽은소설인데 거꾸로시작했네요~ 최근버전에혹해서 따르다보니 첫소설까지 섭렵~ 미리보기내용이 판타지같아 기피했는데 왜이제야봤는지 서운할지경~~ 정말정말강추~♥
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꼬끄
+                        </td>
+                        <td>이틀 밤새고 삼일동안 다 봤네요. 흡입력 최고! 중간중간 조사가 맞지 않거나 편집이 좀 덜 된 느낌이 있어서 아쉬웠지만 재밌었어요~~!
+                    </tr>
+                    <tr>
+                        <td>수연
+                        </td>
+                        <td> 하나씩 곱씹으며 감정을 이입하니 리얼로 가슴이 찌릿. 와... 가상의 이야기에 이렇게까지 사람 마음이 욱신거릴 수가 있나. 문체의 힘이라는 게 새삼, 참으로 대단합니다. 작가님, 멋있어요.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>아기사자
+                        </td>
+                        <td> 난 또 울고있고 ... 또 숨을 못쉬고 있고 ... 눈치없는 남편은 옆에서 왜 자꾸 시리즈보면서 우냐고 묻고 ㅠ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>소령
+                        </td>
+                        <td> 다시 봐도 넘나 재밌고 멋진 하도현 그리고 조금 찬한 이현 ㅎㅎ 외전이 있으면 정말 좋겠당 ㅠㅠ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>으닝
+                        </td>
+                        <td> 도현이도 십년을 저러고 지내왔을거고 지금은 이현이 때문에 불안하고 초조한건 어쩔수 없을거같음...도현이도 불쌍한데 다들 너무 이현이 편만 드는거 같아서 한마디해봄
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>핑키
+                        </td>
+                        <td> 이현아 너 정말 찐이구나 세아로 인해 이미지같은건 안중에도 없어지다니...어떻게보면 제목의 뜻은 이현이 세아에게 품은 마음일지도... 짠하면서도 멋있는데 슬프다..ㅠㅠ
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>롱고
+                        </td>
+                        <td> 하... 정말... 이 회차의 문장은, 가만히 읽고 있으면 절로 심장이 저릿. 문장을 곱씹으면 곱씹을수록 눈물이 그냥 주르륵... 새벽에 또 눈물 한 바가지.
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

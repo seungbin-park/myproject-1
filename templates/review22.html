@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>장씨세가 호위무사 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'장씨세가 호위무사'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>핸드크림(♕BEST)
+                        </td>
+                        <td> 네이버 웹툰으로도 연재되고 있을 만큼 많은 인기를 가진 소설입니다. 은거한 과거의 최강자, 정신적 트라우마, 힘을 숨긴 호위무사 등의 설정을 적절히
+                            섞었지만 살짝씩 아쉬운 부분들이 보였습니다.
+                            단점들이 있긴 하지만 취향에 따라서는 큰 문제 없이 스무스하게 넘어갈 만한 정도이기도 해서 이런 설정의 무협을 좋아하신다면 재밌게 읽으실 수 있을 겁니다.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>한
+                        </td>
+                        <td> 예전 책으로 보던 시절엔 감수는 기본이니까 문맥, 오타 등이 거의 없고 잘못된 책은 바꿔주기도 했었는데...연재본임을 감안하더라도 심함...네이버 직원들 일 좀 해라...
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>블루밍
+                        </td>
+                        <td>단류십오검을 익혀 광휘의 광기가 치유됐으면 좋겠네요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>파랑새
+
+                        </td>
+                        <td>재밌게 보고 있었는데 갑자기 억지 스러운 전개가...
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>라이틀리
+                        </td>
+                        <td>정말 최악의 회차 앞뒤는 맞게 만들어야되는거아닌가.. 200화 소장지른거 환불방법알아봐야겠다 참고보다가 도저히 안되겠네 이건</td>
+                    <tr>
+                        <td>웅이
+                        </td>
+                        <td> 진짜 삽화 너무 도움이 안됩니다.... 읽다가 나올때마다 집중이 안되요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>써니
+                        </td>
+                        <td> 사이다는 잠깐이고 고구마는 한 없이 나오니. 보다 체하겠다.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>지우
+                        </td>
+                        <td>조장급 이상으로 지원받아서 대살성 죽이러 갔습니다 뭐 남궁강무가 어디까지 승진하다가 죽었는지는 나오지 않아서 모르겠네요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>우후웃
+                        </td>
+                        <td>이소설은 스토리가 충실한것 보다는 지명,무공,벼슬 등등을 얼마나 맞는지 모르지만 구체적으로 너무 잘 설명해놓아서 몰입이 좋았음
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>티슈
+                        </td>
+                        <td> ㅜㅜ 작가님 우째 이런멋진작품울 감사하고감사하며읽겠습니다
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>아침바라기
+                        </td>
+                        <td>
+
+                            별점 몇억개를 다줘도 부족함..감사합니다♡
+                        </td>
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

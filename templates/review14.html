@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>백작과 기묘한 묘책 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'백작과 기묘한 묘책'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>타노스
+                        </td>
+                        <td>제국대학 시절 첫사랑이었던 미하엘이 국장으로 있는 특별수사국에서 고국분투하며 예나의 숨겨진 재능과 과거가 밝혀지고...제국 공적 1호 용공과 싸우는 기관에서 일과 사랑 두가지를 성취하는 남녀의 이야기. 상냥하고 여린 것 같아 보이지만 뚜껑 열려서 저돌적으로 변하는 여주인공 강예나가 굉장히 매력젹이고 취행저격이다.  
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>아사퀘나
+                        </td>
+                        <td>작품은 재밌는데...ㅠㅠ 남주가 비호감이에요 너무 강압적이고 함부로 말하고 초반에 몇몇 사건에서는 예나의 의견도 존중하지 않았는데 이런 모습을 처음에 보여준 사람을
+                            나중에는 좋아하게 되는 건가요? 전통적인 순정만화 구도라고는 생각하지만 자꾸만 둘의 케미나 티카티카 보다는 예나야 사표써!!를 응원하게 되는 제가 있네요. 게다가
+                            형은 남주가 예나에게 관심있어보인다는 이유로 네 여자 운운하질 않나ㅠ 예나는...? 예나의 의사는...? 만약 실제로 저렇게 감정있는 사람과 뒤에서 엮이는 걸 들으면
+                            뒷목잡게 될 텐데요... 둘의 관계가 앞으로 어떻게 풀릴지는 모르는 일이니 쭉 읽어보겠습니다. 작품 소재랑 분위기 세계관 주인공은 마음에 들어요!! 중간의 몇몇
+                            설정오류는 다른분들이 댓글에 써주신거 보고서야 맞다 그렇지 하는 중이네요.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>얄심이
+
+                        </td>
+                        <td> 아 걍 다음편까지 보고 하차할까 싶음; 무슨..너무 한국 그 자체라서 보기가 싫음... 애 하나 악녀 프레임 씌워서 조리돌림하는 거랑 곧 죽어도 말 절대 안 하는 새끼, 황후인데도 도련님 소리 꼬박꼬박 붙이고 존대까지 하는....한 마디로 대환장 헬파티. 황후가 가지는 게 저런 권력,지위라면 여주가 이렇게까지 고생해서 미하엘이랑 결혼해야하는 이유도 잘... 진짜 생존빼고는 이유가 하나도 없음 에라이 더러운 놈의 새끼야,,, 걍 능력 개발 더 할때까지 버티다가 후작작위 물려받는게 훨 낫겠다 ㅈㄴ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>리니
+                        </td>
+                        <td>제가 너무 궁금해서 뒤에 교하랑 천운 외전들 읽다가왓는데..하ㅜㅜ 이상황 후다닥 지나갓음 좋겠어요. 가슴이 아려 못보겠ㅠㅠ
+                    </tr>
+                    <tr>
+                        <td>김수연
+                        </td>
+                        <td> 호박씨는 깐거고 걸렸쓰니 다리 한쪽은 내줄테고 이것저것 사정을 보아하니 예나에겐 주구장창 까일테고.. 이런 책 스토리상 결혼은 할꺼같은데... 어케 오해가 풀릴려나...
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>션둘
+                        </td>
+                        <td> 즐겁게 완독했네요 작가님 작품은 항상 인물이랑 배경이 동서양 퓨전이라 첨엔 묘하다 생각하며보다가 어느새 판타진데 뭐어때? 재밌고 흐림에 방해되거나 어색하지 않음되지하게 되다가 막판엔 당연하게 느껴지는 매력이 있어요ㅋ 담작품도 기대할께요^^ 건필하세요~!!!
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>모나미
+                        </td>
+                        <td> 멋대로 전공도 아닌데 본인의사도 상관없이 부사이동시키고, 쉬랬다가, 갑자기 길가다 마주쳤다고 일하랬다가, 뭘 알려주는것도 없으면서 모른다고 화냈다가, 집에가라고 소리쳐놓고 집가니까 말안듣는사람 취급하고....남주 대체 왜저래요..? 여주가 저런 남주 좋아하게된다는게 상상이 안되요...평생 질겁하면서 차라리 매구랑 살지 저런놈이랑 왜살겠냐고 소리쳐도 이해가 될 것 같은데요;;;
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>클로이
+                        </td>
+                        <td> 남주 왜저래...지가 멋대로 바령내려서 남의 직장옮기고 쉬라고 해놓고 억지로 사건에 끌어들이더니 수사에 큰 증언해주니까 되려 이상한데 꽂혀서 큰 소리......유세라님 소설 믿고보는데 이런 구시대적 남주라니 매력없어요ㅠㅠ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>토이
+                        </td>
+                        <td> 정말 로맨스 잘 안 읽는 제 인생작입니다...너무 좋아하는 작품이에요 단행본이든 소장본이든 꼭 나왔으면 좋겠어요 예린이네 외전도요!! 연재하실때 부터 봤지만 지금봐도 너무너무 재밌네요 작가님 건필하셨으면 좋겠습니다! 감사해요!!
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>널레
+                        </td>
+                        <td> 자신의 의사도 선택도 반영되지않은채 자기 미래가 다른사람들에게 좌지우지 당하는 것도 싫은데 할수있는게 아무것도없는게 너무 서러울꺼같아요
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>성운을 먹는자 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>\
+                                        <td>'+ author + '</td>\
+                                        <td>'+ review + '</td>\
+                                       
+                                    </tr>';
+            $('#reviews-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'성운을 먹는자'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="reviews-box">
+                    <tr>
+                        <td>준케이
+                        </td>
+                        <td> 이 소설만큼 퓨전 판타지라는 말이 어울리는 것을 처음 보았다. 무협이면서 판타지의 요소가 군데 군데 섞인 부분이 많이 드러난다. 그렇게 때문에
+                            새로워도 많이 새롭다. 흔해빠진 무협 설정들에 지루해지신 분들은 이 책을 한번 읽어보는 것을 추천하겠다. 그리고 중간중간에 웃음을 주는 요소들이 많아서 보는 내내
+                            지루하진 않을 것
+                            이라고 생각한다.다만 단점같은경우는... 설정이 달라도 너무 많이 달라서 이게 뭔소리지 싶은 부분도 좀 많고 이해가 잘 가지 않는 부분들도 많다.
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>지혜
+                        </td>
+                        <td> 설정은 신선합니다. 뭐 항상그렇죠 김재한님 소설은. 요번엔 여태까지 안쓰던 무협세계관을 쓰면서 다른 여타의 무협과는 상당부분 달리하는 설정으로 인해서 참
+                            신박했습니다. 뭔가 무협적인 느낌보다 오리엔탈 판타지같은 느낌도 받았구요.
+                            그런데....솔직히 제 감상으로는 여태까지 김재한 소설중에서 가장 재미없었습니다. 물론 작가분 소설내에서 그렇고 다른 소설과 비교하면 꽤나 읽어볼만 한데 세 가지
+                            요소 때문에 재미가 상~~당히 반감되더군요.
+
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>김상열
+                        </td>
+                        <td>무려 700화가 넘어가는데 솔직히 읽어보면 별 영양가없는 에피가 너무 많습니다. 굳이 이런걸 넣어야했나 하는 생각이 들정도로요.
+                            별 재미도 없는 일상, 놀이등등등.....덕분에 초중반까지만 해도 스피디하고 재밌게 읽혀지던게 뒤로 가선 질질끌려가며 읽었습니다.
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>철용
+
+                        </td>
+                        <td>게 무슨말이냐 하면... 성운먹에 나오는 악당들은 전~부 이전작에 한번씩 나왔던 악당형입니다. 그들의 사상, 생각, 최종목표, 심지어 주인공을 오히려 구원하는
+                            부분까지 전부 이전작들에서 써먹었던 내용이죠. 짬뽕도 아니고....덕분에 전체적인 설정은 새로움에도 불구하고 인물들은 그냥 재탕하는 기분입니다. 뭐 전작을 읽어보지
+                            않으신 분들에게는 해당사항 없는 내용이네요.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>fkau
+                        </td>
+                        <td>다른분들은 모르겠지만, 제가 여태까지 읽어본 김재한소설중에서 제일 최종전투가 재미없었습니다. 뭔가 여차저차하더니 갑자기 스윽하고 끝나버리는데 뭔가 허망하기도 하고
+                            묘하게 긴박감이 안느껴지고.....여지까지 질질끌려다녀서 그런진 몰라도 차라리 광세천교랑 붙을때가 더 재미있었네요.</td>
+                    <tr>
+                        <td>소연
+                        </td>
+                        <td> 솔직히, 전반적으로 이전작들보다 못했다고 생각합니다. 좀만더 스피디하게만 쳤어도 괜찮았을거같은데 참 아쉽네요...너무 장편이라 지르기도 힘든데.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꽁gh
+                        </td>
+                        <td> 그 신들나오고 글 급루즈해짐 괴령까지는 이해가는데 해신이랑 설산파트서 못버팀 악당간지는 광세천교가 짜세였음
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>미르
+                        </td>
+                        <td> 실질적 마지막인 흑영신교 최종결전보다 광세천교 최종결전이 더 재미있던...
+                            진짜 두번세번 생각해봐도 흑영신교부분은 여태 질질끌고가다가 갑작스럽게 시작해서 끝맺어버렸죠.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>히메
+                        </td>
+                        <td>이분은 이제 새로운 연재 환경에 적응 하실런지... 성진 작가님이 이번에 공모전 작품 냈다가 폭망해서리... 이젠 한치앞을 알 수 없는 세계관인 듯.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>핑클
+                        </td>
+                        <td> 가려는 서하령한테 캐릭터성이 너무 밀리는데 작가가 가려한테만 너무 팍팍 힘을 주고 서하령을 뒷전으로 밀어낸 게 참...전작에서도 의도적으로 히로인 밀어준 적이
+                            많기는 해도 그 히로인들이랑 다르게 가려는 매력적인 요소가 거의 없어서 유독 부각된 단점이죠.
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>길봉구
+                        </td>
+                        <td> 너무 늘어집니다. 아무리 회당결제라 많을수록 돈번다곤 하지만
+                            내용이 충실한 것도 아니고 너무 늘어짐
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>두 입술의 사이 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'두 입술의 사이'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>슈화
+                        </td>
+                        <td> 손세희 작가님의 글은 항상 생각지도 못한 부분에서 아!! 하게 해주는 포인트랄까, 그런게 있어서 개인적으로 굉장히 좋아한다. 또 점점 갈피가 잡혀가는
+                            스토리 구상도 이번에는 개인적으로 참 잘 되었다는 생각을 하며 읽었는데 특히 후반으로 갈 수록 그랬다.
+                            세계관도 탄탄했다. 전혀 거슬리지 않았고, 또 왕족의 특이한 체질.축복에 관한 설정도 흥미로웠다.
+                            다만 탄탄히 풀어가다보니, 연재분에서는 등장인물들의 사적인 이야기(연애, 사랑, 결혼 후..) 그런 전형적인 로맨스 부분이 부족해서 안타까웠달까.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>서사랑
+                        </td>
+                        <td> 소설 너무 마음에 들었습니다. 모두가 행복한 엔딩이고 에스메랄다와 알렉산드르 그리고 마리아와 프란츠가 행복하기를 기념하는 훌륭한 소설이었습니다.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>곧미녀
+                        </td>
+                        <td>재미있는데....여주가 너무 불쌍하네요.... 1황자 완전 또라이임...
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>완전부자
+
+                        </td>
+                        <td> 잘 봤습니다. 2틀동안 계속 봤어요. 이 부부는 황가를 위해 아이는 낳지 않는 마무리가 좋네요~
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꼬끄
+                        </td>
+                        <td>시간이 여러군데서 안 맞는다는 느낌이 들어요...정복군주에 대항하는 군대에서 24살인 에스메랄다가 교육을 받았다는게. 현 평화군주가 제위에 오른지 11년 이라면서요? 프란츠도 열넷이랬다 열다섯이랬다가 그랬지만 한살정도야 그러려니 했는데</td>
+                    <tr>
+                        <td>소연
+                        </td>
+                        <td> 이시키들이..공주죽으면 가만안둬... 계속 다치고아프고..몇번째여...3번째다..왜이렇게반복이여..고구마백만개다고구마고구마고오구마!!
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꽁시
+                        </td>
+                        <td> 아... 정예부대 출신인데 너무 허술하다.. 뭔가 정예부대 출신의 여주가 보여주는 능력이 없다 ㅠㅠ 아쉽다
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>미르
+                        </td>
+                        <td> 작가님…담 편 가느라…댓글 못 적어도 이해하세요~ 어쩌긋어요~ 넘 잼난걸~ 작가님 탓이니 받아들이세요? ㅋㅋㅋㅋㅋ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>히메
+                        </td>
+                        <td> 맞아요... 리안이 짱이올시다ㅜ 사실 프란츠가 에스메랄다 좋아해서 알렉산드르가 프란츠에게 질투 느끼는거 보고 싶어서 이만큼 봤는데.. 알렉산드르 이 무매력 연약한남자야
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>핑키
+                        </td>
+                        <td> 그대를 닮은 아이를 갖지 못하는 것은 아쉽지만 낳지도 않은 아이 때문에 그대가 괴로워할 필요는 없다고 말해주지... 대를 이을 자식이 이미 있으니 아이는 필요없다고 자르네 ㅋㅋㅋㅋ 진짜 어이없는데 막장같애서 계속 보게되는군
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>봉길이
+                        </td>
+                        <td> 구입해서 보고 있는데..내용이 너무 질질 끌어가는 느낌이 드는군요
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

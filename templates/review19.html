@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>이계진입 리로디드</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'이계진입 리로디드'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>마블
+                        </td>
+                        <td> 300화가 넘는 긴 소설을 질리지 않고 단숨에 읽어냈습니다.
+                            주인공이 내내 나에게 복수의 자격이 있는지를 스스로에게 되묻는 장면들이 인상적이었어요.
+                            그리고 회가 거듭될수록 복수의 이유를 유의미하게 찾아가는 과정들도 재미있었구요.
+                            길게 늘어지지 않고, 적당히 속도감 있는 전재인데다
+                            주인공이 강하지만 강함에는 이유가 있고,
+                            그렇다고 홀로 천상천하 유아독존식의 강함이 아니라
+                            때때로는 당하기도 하고, 도망도 치고, 머리도 굴리고,
+                            동료들의 도움을 받아 앞으로 나아가는 과정이 볼만해요.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>푸켓
+                        </td>
+                        <td> 등장인물 지능이 낮다고 생각하고 있을 때 홀로 똑똑한 우리의 켈베론. 주인공이나 악역이나 일반인보다 살짝 낮은데 켈베론 이놈은 왜인지 모르게 똑똑하다. 특히 소문을 소문으로 감추면서 역공하는 모습은 소름돋았다. 클리셰를 뒤튼 소재이지만 클리셰를 따라가는 스토리는 별로였다
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>햄찌
+                        </td>
+                        <td>무난하게 재밌음
+                            씹덕요소x
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>과거롱
+
+                        </td>
+                        <td>
+                            작가 고유의 설정이 상세하면서도 탄탄한데 설정딸 좋아하시는 분한테는 추천.
+                            문체는 무난하고, 서술이 약간 늘어지는 감이 있음.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꼬끄
+                        </td>
+                        <td>58권으로 끝이났군요, 달빛조각사를 알게된지 저는 6년쯤됐네요, 중간중간에 '왜이렇게 업데이트 안하나요'징징댔었는데 넓은마음씨로 넘어가주셔서 감사합니다. 잘봤습니다!! 제 인생 판타지ㅣ 소설 Top1입니다</td>
+                    <tr>
+                        <td>소연
+                        </td>
+                        <td> 군단도 급했고 신체개조한 위드의 달라진 모습도 모르겠고 바드레이와의 결전도 모르겠고 다른 요정들의 차원이던가 그거도 그냥 베일에 감춰졌고 뭐시기 화가 직업은 텔레포트 셔틀이고.. 풀어낼 이야기는 더 많았을텐데 완결 가까이에서 너무 급하게 마무리 지으신 건 아닌가 싶네요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꽁시
+                        </td>
+                        <td> 페일, 이리나, 로뮤나, 수르카 등에 대한 얘기도 아니고,,, 난데없이 이대로 묻고 넘어가긴 아깝다는 이유일진 몰라도 양념게장 이야기로만 끝내버리다니... 차라리 위드가 새 게임 만든 내용까지만 해서 거기서 끝을 내는게 낫지않았나 싶네요 이게 뭔,,
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>미르
+                        </td>
+                        <td> 작가님…담 편 가느라…댓글 못 적어도 이해하세요~ 어쩌긋어요~ 넘 잼난걸~ 작가님 탓이니 받아들이세요? ㅋㅋㅋㅋㅋ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>히메
+                        </td>
+                        <td> 맞아요... 리안이 짱이올시다ㅜ 사실 프란츠가 에스메랄다 좋아해서 알렉산드르가 프란츠에게 질투 느끼는거 보고 싶어서 이만큼 봤는데.. 알렉산드르 이 무매력 연약한남자야
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>핑키
+                        </td>
+                        <td> 그대를 닮은 아이를 갖지 못하는 것은 아쉽지만 낳지도 않은 아이 때문에 그대가 괴로워할 필요는 없다고 말해주지... 대를 이을 자식이 이미 있으니 아이는 필요없다고 자르네 ㅋㅋㅋㅋ 진짜 어이없는데 막장같애서 계속 보게되는군
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>봉길이
+                        </td>
+                        <td> 구입해서 보고 있는데..내용이 너무 질질 끌어가는 느낌이 드는군요
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>요운당 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'요운당'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>마들링
+                        </td>
+                        <td> 솔직히 말하자면 개인적으로는 제게 비호에 가까운 작가님이에요. 전작들을 통해 저와는 잘 안 맞는 걸 느꼈거든요.
+                            작품의 재미를 못 느꼈다는 게 아니라 작품 속 느껴지는 인물들의 관계나 도덕성? 이런 점들이 미묘하게 저와는 안 맞아 좀 불편했던 느낌. 그래서 이런저런 이유로
+                            평이 좋고 유명한 작품에 이벤트까지 해서 구매를 했지만 개인적으로 현로만 주로 읽기도 하고. 론 이런 류의 소재는 그래도 좋아하는 편이지만 재탕을 할 만한 임팩트를 저는 받지 못
+                            했네요.</td>
+
+                    </tr>
+                    <tr>
+                        <td>고객만족
+                        </td>
+                        <td> 헛;; 읽고있는데 손톱이 부러져서 응? 하는 찰나에 호요의 손톱이 나타나서 깜짝이야ㅠㅠ 재밋게 일게되서 댓글달 시간이 읎어요 일단 읽어봐요 계속 보게됩니다! 근데.. 과거와 현재를 좀 정신옶이 왔다갔다해서 좀 그래유..</td>
+
+                    </tr>
+                    <tr>
+                        <td>김효정
+                        </td>
+                        <td>쫌 더 멋진 환타지가 나올수도 잇엇을 것 같은 소재인데...재밋게순식간에읽긴햇는데... 살짝아쉬움 ... 뭔가자꾸살짝아쉬워... 그래서자꾸미련이남네...뭔가더좀써주셨으면
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>리나
+
+                        </td>에어
+                        <td> 너무 애정하면서 봤던 소설이에요. 옴니버스 형식이라 한 에피소드가 끝나기 전에 보면 너무 궁금했던 거여서 ㅋㅋㅋㅋ 항상 기다려서 조금씩조금씩 봤는데 후반부에는 그냥 올라올때 봤네요. 송백님 삽화도 너무 잘 어울렸어요. 제가 동양판로라는 장르를 처음 접한 소설인데 호요한테 너무 설레면서 잘 읽었어요^^ 나중에 읽다보니까 동양판타지로맨스 실망시키는 법이 없는 제 취적장르였더라고요 ㅎㅎ 제가 웬만한 건 다 이해하는 편인데 3장때 너무 이해가 안돼서... 그때 그냥 꾸역꾸역 보다가 접었었는데 10장이 올라올 때쯤 각잡고 정주행했어요~ 3장은 여전히 어려운 장으로 남아있지만 주인공들에게 이입이 되면서 나중에 갈수록 더 재밌어졌어요. 특히 호요는 제가 진짜 맘에 든 몇 안 되는 남주들 중 하나네요. 마지막으로 정리하자면, 끝까지 읽어보시면 어느새 애정하는 작품이 될거라는 것! 추천합니다 ㅎㅎㅎ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>토박이
+                        </td>
+                        <td>으허허어어ㅓㅓㅓ!!!벌써!!벌써!!다봐버리다니...너무 재밌어서 넉놓고 봤다가..흑..작가님 갑자기 죄송하지만 정말 사랑합니다.두번 사랑합니다.세번 사랑해요.그리고 호요랑 승정..진짜..정말 세상에서 제일 좋은 커플입니다...그래서 작가님 정말 사랑합니다.
+                    </tr>
+                    <tr>
+                        <td>디스패치
+                        </td>
+                        <td> 마지막에 10년간 겨울을 지나 드디어 봄이 왔다,봄에게로 왔다 이 말이 멋지네요 처음 봄은 승정(봄)이 호요에게 온것을 호요 입장에서 서술 되고 두번째 봄은 승정이 호요(봄)를 찾아 간것을 서술하고,각각의 입장에서 서로의 봄을 찾아가고, 왔다고 표현하는거 같아서 멋있어요!!
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>혜후
+                        </td>
+                        <td> 제가 최초로 미리보기를 했습니다. 근데 왠 정신나간 아주머님이 죽음에 대해 재해석하시고 있으시네요,아하하하하하...는 개뿔. 승정이 상태보고 매우 많이 지금도 화났지만 더 화냈으면하네요.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>호잇
+                        </td>
+                        <td> 유일하게 한번보고 꽂혀서 결재까지 하고 보는중인데요 네이버북스에는 그림이 없어 아쉽네요 글도 재미지고 좋은데 그림보는 맛도 있거든여! 네이버북스에 그림을 넣을수는 없는가요ㅠㅠ? 연재소설보는때와 맛이 다르네요...흐규ㅠㅠ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>느림보
+                        </td>
+                        <td> 요운당은 첫화부터 꿀잼이라 정독하려고 이번에 올리신것까지 다 대여해버렸어요 정말 강추드릴만한 소설입니다 재밌어요!!
+                            </td>
+
+                    </tr>
+                    <tr>
+                        <td>은영
+                        </td>
+                        <td> 돈 주고 소설 대여하는 거 정말 많이 안하는데, 이건 바로 결제했습니다! 책으로 나온다면 살 의향도 있어요 진짜 꿀잼
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>시이
+                        </td>
+                        <td> 네버 웹소설에서 일화보고 궁금증폭발로 와서 결제해서봤어여♥♥♥ 진짜... 대박 좋아요ㅋㅋㅋ
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

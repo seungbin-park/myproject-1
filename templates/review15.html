@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>고양이 키스 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'고양이 키스'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>고구미
+                        </td>
+                        <td> 웹소설을 보기 시작하던 초기에 재밌게 봤던 작품입니다. 여주가 사고를 당해서 죽게 되는데 진짜 몸이 다시 만들어지기 까지 임시 몸으로 생활하게
+                            됩니다. 그러다가 까칠한 수의사인 남주를 만나게 됩니다. 그렇게 초반에는 티격태격거리다가 서로에게 빠져드는 로맨스입니다. 여주가 고양이일 때 스토리가 재밌어요. 좀 아쉬운건 막판에 여주가 원래 몸으로
+                            돌아가게 되면서 남주가 여주를 찾아헤매는 내용이 많이 짧았다는 거죠. 너무 빨리 찾아서
+                            제가 허무할 정도...
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>랴뷰
+                        </td>
+                        <td> 하은이...... 어장관리. 아무리 좋게 포장해줘도 어장관리죠.. 지도 마음있으면서 고백도안하고 거리두고 딴사람과 결혼날짜잡고. 외국나간다니 와서매달리고 이게뭐하는짓인지.. 
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>말랑젤리
+                        </td>
+                        <td>도서관에서 종이책을 보게 되었는데 완전 폭 빠져버렸어요. 그래서 결국 여기까지 와서 외전도 읽게 되었네요. 비현실적인 설정이지만 그 안에서 짜임새가 맞아 떨어지고, 주로 여주 시점에서 서술되지만 너무 잘나서 너무 궁금한 남주 시점을 가끔 보여주는 것도 맘에 들어요. 그리고 보통 남녀가 함께하는 장면은 야한 느낌을 줄 수 밖에 없는데, 서로가 사랑하는 마음이 절절하게 느껴지게 표현하는 작가님의 문체랄까 그 스타일도 정말 좋아요.(어게인 읽고 작가님꺼 찾아보다가 이걸 보게됨. 어게인은 끝마무리가 아쉬웠지만) 암튼 정말정말 잘 읽었어요. 작가님, 계속 응원합니다~~
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>리나
+
+                        </td>
+                        <td> 처음엔 막연히 가볍게 읽을만하다고 생각했는데.. 먹먹하네요 ㅠㅠ 둘이 지금 기억 간직한채로 좋은사랑 하기를 바라며 남은 이야기 읽어야겠어요 ㅠㅠ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>샘샘
+                        </td>
+                        <td>우와 어느덧 결말이네요 정말 재밌게 잘 봤습니다 달달한 주인공들 보기좋았어요~강 같은 남자 만나보고싶네요 해인이같은 여자가 되고싶기도하고 ㅋㅋㅋ고생 많으셨엉ㅅ!
+                    </tr>
+                    <tr>
+                        <td>스폰지밥
+                        </td>
+                        <td> 헝..작가님 !! 어제 우연히 네이버에 웹소설을 보러갔다가 이 작품이 있기에 봤다가 재밌어서 하루 사이에 12000원이나 결제를 해서 봐버렸어요 ㅎㅅㅎ 소설에 이렇게 돈을 쓴 건 처음인거 가태요 ㅎㅎ 나중에 시간 있으면 책도 사서 소장하고 싶네요 !! 좋은 작품 감사합니다 재밌었어요❤❤
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>연희
+                        </td>
+                        <td> 아주 잘 보고 갑니다~~뭔가 고양이를 한번 키워보고싶게 만드는 글이었네요~~^^59화에 해인이 엄마랑 전화통화 하는 장면에서 해강이라고 남동생이 있었는데 등장하지 않았네요 뒤로 갈수록 해인은 외동딸 처럼 되어버림감이 없잖아 있네요
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>j
+                        </td>
+                        <td> 아아아......결혼하고 나서 이야기도 보고싶었는데 너무 아쉽다.... 작가님 너무 재미있게 읽었어요 감사해요 완결나자마자 읽으려했는데 결제가 오류떠서 이제야 읽네요ㅠㅜ 망할네이버
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>현희
+                        </td>
+                        <td> 별점 당연히 10점으로 되있을줄 알고 그냥 눌렀더니 5점이라니...수정도 안되는...ㅠ 10점 만점에 백점입니다...!! 이 소설 진짜 제 애정소설ㅠㅠ 해인이랑 시율이 헤어질때 눈물도 흘리고..공감하며 읽었던 소설이에요..!♡! 작가님 다음 작품 기다리겠습니다:))
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>라빈
+                        </td>
+                        <td> 처음엔 아무생각없이 시간때우기용으로 읽는연애소설이었는데 끝으로갈수록 너무이입되서 둘사이의 애틋함이 눈물이나올것만큼 좋네요 이제 두편남았는데 너무아쉬워요 좋은글과 삽화 정말감사합니다
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>hs
+                        </td>
+                        <td> 외전이 있었다는 걸 알고 바로 결제해서 질렀습니다! 월이 해인이가 아니라 해인이 엄마였다는 사실이 좀 신기헸고 야호와 백로가 이어진 것도 좋고 해인이와 시율이는 언제나 영원히 행복할 것 같아 좋네요. 작가님 그동안 수고 많으셨습니다~
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

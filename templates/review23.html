@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>천화일로 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'천화일로'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>콩콩이(♕BEST)
+                        </td>
+                        <td> 베일에 싸인 요소로 독자의 흥미를 유발한다. 요즘 나오는 무협과는 다른 세계관으로 흥미를 유발시킨다. 조금 무모하지만 무대포는 아니고 답답하지 않는 주인공보다 인물들이 조화를 이뤄 전개되어 무협을 보기를 원하신다면 추천한다.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>카카오틱
+                        </td>
+                        <td> 목마형이 원래 일러 외주를 잘 맡겼음. 결과물도 괜찮았고 파워 맥시멈이 항상 신급이라 좀 높은듯 싶지만 인플레도 없고 글이 지루해질때 적절히 연참하는것도 센스있다고 느껴짐. 다음작도 챙겨봐야지 하는 작가중에 하나
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>이창호
+                        </td>
+                        <td>작가님이 천화일로 기존 목마월드랑 다르다고 하셨는데 선계 있는거나 마왕 여러명인거나 천마가 마왕되려고 하는거 등 기존 목마월드랑 겹치는게 많고 투신전 무신전 들어가는 초월자나 주인공은 있었지만 아직 쥐뿔 반마왕 말고는 등장인물이 마신세계 초월자 되는 작품은 없었는데 독자들이 천화일로 보면서 목마월드 생각하는데 작가님은 전작이랑 관련 없다고 하시는거 이해가 안됩니다
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>라이언
+
+                        </td>
+                        <td>원래 이렇게 질질끄는파트 연참으로 넘겼는데 마무리에서 너무 질질 끄는 느낌이 들어서 아쉽습니...
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>노아
+                        </td>
+                        <td>기존 목마 소설봤을때 결말에서도 던전같은걸 고대로 유지해서 기득권 굳히는 엔딩이 많았었죠. 이번 결말도 위성천이 천마랑 마물 다 조지고 천마 이어서 인간 무연준 vs 천마 위성천 해서 진심으로 붙은 다음에 짜고치는식으로 정사균형 맞추는 식이 될거같기도 하고....</td>
+                    <tr>
+                        <td>이현기
+                        </td>
+                        <td> 목마월드에 포함 안 되니 구불구불한 외길은 투신전 입문루트가 아니라 혈교와 일련 등 멸마를 위해 스러진 자들의 의지를 잇는 거라고 봐야 할 거 같습니다. 그리고 300화에 천살이 생사경이라는 오타가 나왔는데 만약 오타가 아니라면 신화경 위에 생사경이 있고, 혁월운이 생사경에 올랐을 가능성도 있지요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>비타민
+                        </td>
+                        <td> 이거 예전 목마 월드랑 연결되면 천마야말로 외길 입성하기에 딱인 인간인데, 솔직히 이제 2화째인데 흑마왕 간지 넘어섰음, 목마 작품 특 천마가 진주인공
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>차정언
+                        </td>
+                        <td> 아...흥미롭다~^^완전 드라마~잼있네요.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>블랙잉
+                        </td>
+                        <td>ㅋㅋㅋㅋㅋ작가님...참...글 잘 쓰시는 듯~^^
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>행복
+                        </td>
+                        <td> 사이다를 넘어선 탄산으로 범벅된 기분ㅋㅋㅋㅋㅋㅋ
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>성열
+                        </td>
+                        <td> 전투씬 ㅈㄴ 형편없네 ㅉ 미안하다... 이거보여줄려고 어그로 끌었다 와 위성천 무연준 싸움수준 실화냐? 진짜 세계관 정상급의 대결이다 이게 내가알던 위성천이 맞냐? 녹림마제한테 코 부러지고 백열마녀한테 두들겨맞던게 어그제같은데..... 이제는 십걸들과 견줘도 부족하지 않네 무겁수신위 쓰면서 무연준 공격 다흘려낼때는 가슴이 뛰고 용원 써서 압도적으로 찍어누를때는 대견해서 가슴이 먹먹해지더라.....
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

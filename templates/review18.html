@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>달빛 조각사 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'달빛 조각사'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>망고링고
+                        </td>
+                        <td> 워낙에 유명한 작품이라 소설을 좋아하는 사람이라면 조금이라도 안 본 사람이 드문 작품이다. 초반에 읽을 때는 너무 신선하고 재밌었어 밤을 새며 읽기도
+                            했었다. 주인공이 홀로 무적이지는 않아서 사건사고를 해결해 나가는 과정이 유쾌하고 흥미로웠다. 개인적인 생각으로는 중반 정도쯤에서 마무리를 지었어도 좋았을 것 같다. 작품이
+                            길어지다 보니 문제도 많이 생긴 것 같다. 게임 장르의 소설을 좋아하는 사람이라면 반드시 읽어 볼 만한 소설이다.
+                  
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>원지혜
+                        </td>
+                        <td> 달빛조각사 완결소식에 처음 읽어봤는데 진짜 30~40권까지는 너무너무 재미있어요~ 그 후에도 재미있긴 하지만 권수 압박에 그 전처럼 재미있게 읽진 않은것 같아요. 댓글들 보니 마무리하지 못한 떡밥들이 많은데 나중에 여러가지 버전 외전으로 풀어주시면 좋겠네요~ 잘 읽었습니다
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>김상열
+                        </td>
+                        <td>너무 끄는게 보여서 짜증나네 전투준비야 마지막 전투니까 여태까지 나온 캐릭터들 출연하면서 이야기를 이어 나가다가 전투에서 빵 터칠라나보다 싶었는데 아직 전투초반이긴해도 이건 뭐 이렇게 지루하고 재미없게 쓰고 앉았냐 완결까지 요약본 같은거있으면 그냥 그거보세요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>곽철용
+
+                        </td>
+                        <td>설정오류가 너무많네요 방송사에서 전화왔을때 1년4개월에 219렙은 ㅈㄴ높은것처럼 얘기해놓고 게임이 1년6개월밖에 안되었단건 설정오류가 맞습니다. 레벨 오락가락하는것도 그렇구요
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꼬끄
+                        </td>
+                        <td>58권으로 끝이났군요, 달빛조각사를 알게된지 저는 6년쯤됐네요, 중간중간에 '왜이렇게 업데이트 안하나요'징징댔었는데 넓은마음씨로 넘어가주셔서 감사합니다. 잘봤습니다!! 제 인생 판타지ㅣ 소설 Top1입니다</td>
+                    <tr>
+                        <td>소연
+                        </td>
+                        <td> 군단도 급했고 신체개조한 위드의 달라진 모습도 모르겠고 바드레이와의 결전도 모르겠고 다른 요정들의 차원이던가 그거도 그냥 베일에 감춰졌고 뭐시기 화가 직업은 텔레포트 셔틀이고.. 풀어낼 이야기는 더 많았을텐데 완결 가까이에서 너무 급하게 마무리 지으신 건 아닌가 싶네요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꽁시
+                        </td>
+                        <td> 페일, 이리나, 로뮤나, 수르카 등에 대한 얘기도 아니고,,, 난데없이 이대로 묻고 넘어가긴 아깝다는 이유일진 몰라도 양념게장 이야기로만 끝내버리다니... 차라리 위드가 새 게임 만든 내용까지만 해서 거기서 끝을 내는게 낫지않았나 싶네요 이게 뭔,,
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>미르
+                        </td>
+                        <td> 작가님…담 편 가느라…댓글 못 적어도 이해하세요~ 어쩌긋어요~ 넘 잼난걸~ 작가님 탓이니 받아들이세요? ㅋㅋㅋㅋㅋ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>히메
+                        </td>
+                        <td> 맞아요... 리안이 짱이올시다ㅜ 사실 프란츠가 에스메랄다 좋아해서 알렉산드르가 프란츠에게 질투 느끼는거 보고 싶어서 이만큼 봤는데.. 알렉산드르 이 무매력 연약한남자야
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>핑키
+                        </td>
+                        <td> 그대를 닮은 아이를 갖지 못하는 것은 아쉽지만 낳지도 않은 아이 때문에 그대가 괴로워할 필요는 없다고 말해주지... 대를 이을 자식이 이미 있으니 아이는 필요없다고 자르네 ㅋㅋㅋㅋ 진짜 어이없는데 막장같애서 계속 보게되는군
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>봉길이
+                        </td>
+                        <td> 구입해서 보고 있는데..내용이 너무 질질 끌어가는 느낌이 드는군요
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

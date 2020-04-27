@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>세월의 돌 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'세월의 돌'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>코스틱
+                        </td>
+                        <td> 세월의 돌은... 동화를 걷는 듯한 느낌의 소설이라고 할 수 있겠습니다. 백설공주 이야기. 신데렐라, 미녀와 야수 바로 그러한 신비하고도 존재할 리 없는 세상에 우리를 초대하는 듯한 느낌의 이야기입니다. 작가님은 화려하고도 부드러운 필체로 다양하고 웅장하며 아름다운 장면을 연출해 주시고 무엇보다도 자연스러운 대화의 흐름으로 하여 우리를 그 대화속에 끌어다 놓는 기분입니다. 주인공 파비안과 유리카 단 둘의 대화 뿐인데도 마치 그 둘의 대화를 저까지 포함해 듣는 듯한 느낌을 줍니다.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>카카오틱
+                        </td>
+                        <td> 이런식의 소설이 읽기 힘들고 복잡하다고 느끼는 건 본인이 인스턴트식의 소설에 길들여져 있는게 않은가 생각해봐야 합니다. (인스턴트식 소설을 까는게 아닙니다. 저도 그런 소설을 좋아하는 편이고 장점도 있다 생각합니다.)
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>김성일
+                        </td>
+                        <td>세월의돌 마지막권만 계속읽었음ㅠㅠ 마지막화보고 며칠동안 세월의돌 생각밖에 안나서 딴걸 할수가없었음ㅠㅠ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>라이센스
+
+                        </td>
+                        <td>정말 감동적인 소설입니다. 마지막에 가슴이 먹먹해지는 느낌. 아하, 다시 보려해도 여운이 너무 남아 세월이 조금 더 흐른 뒤에
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>열린하늘
+                        </td>
+                        <td>유리카가 깨어난 직후의 이야기인가 보군요. 찾아온 기사들은 아마도 아르킨과 구원기사들..? 200년이라는 긴 세월을 하루의 잠처럼 보내고 그리운 사람의 이름을 듣고 더이상 그가 없을 세상에서 우는 유리카를 보니 맘이 아프네요. 하지만 산을 내려가서 만나게 될 소년은 그의 흔적을 지니고 있고, 점이 없을 유리카의 마음을 제대로 들여봐줄 사람일테니 너무 울지 마요. 유리... 둘은 더이상 헤매지 않을 것이고 함께 있게 될 거에요. 긴 이야기의 끝은 분명 해피엔딩일거에요.</td>
+                    <tr>
+                        <td>열매맺는 나무
+                        </td>
+                        <td> 음 ...이작가가 필력이 좋단 얘기죠 ? 그렇군요 저도추천 A급이상(미친필력포함) 필력작가 - 김광수, 강승환, 타사우프 ,광악 ,고두열, 강철신검 ,가이하,김정률,오채지,이외는 아직 발견을 못했음 .잘기억도 안남
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꽁시
+                        </td>
+                        <td> 룬의 아이들보면서도 느낀건데 이 작가는 감정표현이 정말 섬세한것 같아요. 룬의아이들에서는 주로 슬픈 장면들이 인상깊게 그려졌는데 세월의 돌에서는 기쁨 사랑 이런 장면들이 인상깊네요. 파비안과 유리카가 같이 강물에 빠졌을때 끌어안는 장면이 제일 좋았던것 같습니다.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>차정언
+                        </td>
+                        <td> 한번 읽으면 그냥 좋다라는 생각만 드는데 두번이상읽고 책에나오는 시와 아룬드 달력 소개를 다읽으면 내용과 연관이 잘 되있어 소름까지 돋는다. 룬의아이들도 재밌지만 이런분위기의 책들도 충분히 좋다 -인생작-
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>메트릭스
+                        </td>
+                        <td> 복잡한 과학 책을 읽는 느낌이다, 배경설정이나 인물에 대한 독자의 몰입감이 너무 떨어진다 마치 나는 이런 설정으로 쓸태니 너희들이 알아서 읽고 해석해라 이런식이다 장르소설은 복잡한 용어나 인물설정보다 독자가 읽으면 바로 이해하기 쉽게 써야 한다 다음 장을 안 읽으면 궁굼해서 미칠것 같은 그런 긴장감이 전혀 없다
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>행복쉼터
+                        </td>
+                        <td> 양판소에 찌든 판타지 치유하기 딱 좋은 판타지같은 느낌 마법도 현실성 있고 그냥 닥치고 몹이나 때려잡는 양판소랑은 확실히 다른 판타지 소설
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>봉길이
+                        </td>
+                        <td> 찬양 한번 하고 갑니다. 1.막장 판타지 기대하고 읽지 마세요. 2. 사랑, 슬픔만 넘치거나 일상에 대한 극적 표현에 지친 '국내 소설' 독자 분들. - 이런게 '좋은' 판타지 소설 입니다. 3. 맨날 전투씬에 먼치킨, 겜판만 읽어대면서 판타지판타지 하는 분들 - 이런 것 좀 읽고 질렸다는 말을 쓰세요. 제발. 4. 해외 판타지 꽤 좋아하신다면 읽어 봄직한 책
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

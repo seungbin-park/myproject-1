@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>재혼황후의 세계 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'재혼황후'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>피스타치오
+                        </td>
+                        <td> 원래는 인터넷으로 웹툰만 보다가 표지가 너무 내취향이라서 보게된 소설 재혼황후!!황제후회물이라는데 보통 후회물은 남주랑 다시 재결합하는 내용이 많은데
+                            이 소설은 신선하게 이혼을 하자마자 재혼하는 황후의 시원함을 볼 수 있다.
+                  
+                            소설 첫 장면부터 이혼하자마자 재혼승인을 요구하는 황후 나비에! 이 장면만 믿고 초반~중반의 고구마를 견딜 수 있었다. ㅋㅋㅋㅋ 네이버 시리즈물에서 워낙 인기가 있어서 그런지 보통
+                            소장은 쿠키1개인데 재혼황후는 쿠키가 3개 ㅠㅠ 열씸히 쿠키 굽지만 3개는 넘 비싸! 대여권은 1개라 다행이지만 사이다구간은 소장하고싶은 내맘 ㅋㅋㅋㅋ
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>일리오슈
+                        </td>
+                        <td> 개비에슈 속시원하면서 불쌍하고.. 나비에 행복한건 너무 좋다.. 아르티나 경도 좋고..
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>요를레히
+                        </td>
+                        <td>젤 나쁜건 소비에슈임 혼자 멋대로 나비에가 불임이라고 착각하고 내쫓지를 않나 애 가진 정부를 황후로 올려놓고 애 낳고 나니까 내쫓을 생각만 하고 있질 않나..여자가 애낳기 위한 존재야 뭐야
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>햄
+
+                        </td>
+                        <td> 쇼비에슈가 후회했던 지난 과거들, 만약 이랬더라면 나비에랑 틀어지지 않았을건데 라고 생각했던 부분들이 재 각색되어 라스타와 함께 반영 된건가? 악역이였지만 끝까지 우울하게 나오는 사람들을 마지막에는 조금은 편하게 보내주자 였음 좋겠다
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>766
+                        </td>
+                        <td>라스타...죽어마땅한죄를 많이 지었지만.. 한인간의 인생으로 보면 많이 씁쓸하고 조금안타깝네요 그런인간도 아버지라고 마지막 한조각애정을 기대했다 가 작은유리구슬이깨졌다는..... 배움이짧고 살아온 세상이 너무좁고 험해서 무지하고 배려란걸몰라 철저하게 자기입장에서밖에 생각할줄 모르는 라스타옆에 피빨아먹는 로테슈..나쁜길로 인도한 에르기가아닌 제대로된 조언을해주는 이들이 있었다면 이렇게됐을까 싶네요.....
+                    </tr>
+                    <tr>
+                        <td>즐건이
+                        </td>
+                        <td> 진짜 알렌이 모든 시초잖아. 저게 자작 이어받겠다고 아비랑 같이 애기 시체 가져다놓지만 않았으면 랍스타는 도망치지 않았을거고. 그럼 나비에는..하인리는 못만났겠지만 상처같은거 안받고 잘 살았겠지
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>디셈버
+                        </td>
+                        <td> 라스타 첫 아기에 대한 반응만 봐도 소비에슈의 찐사랑은 라스타쪽이 아니라 나비에쪽임ㅋㅋㅋㅋ 그럼 머하겠어요 이미 나비에는 마음 떠났고 소비에슈는 멍청한 계획만
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>미미
+                        </td>
+                        <td> 너무잼있게 고구마백개와사이다와 슬픔. .흐뭇 드라마로 나온다는거같은데 그전 글로먼저봐서 천만다행인듯싶네요. 책이 훨씬 나을꺼같은 ㅎ 너무잼있게봣어요.외전까지 마음에들고
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>비닝
+                        </td>
+                        <td> 아이고야 ㅠㅠ 진짜 재혼황후 작가님은 제가 얼마나 사랑하는지 모르실꺼에요 ㅠㅠ 쿠키가 부족해서 계정바꾸고 새로했따 ❤️
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>해오름
+                        </td>
+                        <td> 이게 끝인가요 어이없네요. 이제까지 돈주고 본 독자들 우롱아닌가요 아무런 예고설명도 없고ㅠㅠㅠ
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>코밍
+                        </td>
+                        <td> 아 진짜;; 선장새기 또 그새끼 생각났다.,,.. 그정도 책임감이랑 사명감이 없으면 배를 몰면 안돼지 미친..... 혼자서 몇백명을 죽인거임... 직접 칼로 찔러죽인것만 살인인가... 또 그와중에 귀족이라는 작자들이..... (할많하않)
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

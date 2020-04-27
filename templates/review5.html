@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>위험한 신혼부부 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'위험힌 신혼부부'의 리뷰를 남겨주세요 ๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+              
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>조이
+                        </td>
+                        <td>
+                            천진난만한 아내 미사와 비밀을 간직한 남편의 신혼은이 어떻게 이루어 지게 되는지를 다룬 작품이다. 요근래 드라마를 보면 타임슬립처럼 예전으로 돌아가는 내용들이나,
+          과거 현재를 왔다 갔다하는 장르를 많이 접할 수 있을 것이다. 이 소설은 뒤에 나오는 외전까지도 너무 재밌있게 보았던 기억이다.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>zosed
+                        </td>
+                        <td>
+                            공항에서 사라질줄 알았는데 .. 이런연기를?ㅠㅠ 재밌게보구있는데 살짝 늘어지는느낌이들었지만 그래도 결망이 해피엔딩이라서 기분좋게 다읽음
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>qmffor
+                        </td>
+                        <td> 초반엔 내용이 귀엽고 잼났는데 후반엔 진짜 쫌 막장느낌이다ㅠㅠㅠㅠ 
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>귤귤귤
+
+                        </td>
+                        <td> 엥... 아니 병원에서 제대로 검사도 안받고 뛰쳐나온 건데 뇌에 무슨일이 있을 줄 알고 병원에 내일 간대..? ㅋㅋㅋㅋㅋㅋ 뇌가 얼마나 중요한데ㅠㅠ 기억까지 잃은 마당에 뇌출혈이 있을 수 있는데....
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>천사
+                        </td>
+                        <td> 몇년 전부터 미루고 미루고 미루다 이제서야 몰아 봤는데 괜히 미뤘었네요ㅠㅠ역시 작가님! 대작인 이유가 있었어요ㅠㅠㅠ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>라링
+                        </td>
+                        <td> 최고스타인데 자산이 몇십억이라니 너무 적긴 한데요 cf만 찍어도 일년에 몇십억씩 벌겠구만
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>김영서
+                        </td>
+                        <td> 후반부로 갈수록 참 '예쁘다'라는 말이 절로 나오게 되는 작품인 거 같아요 저에게 이런 예쁜 글을 읽을 수 있게 해주셔서 너무 감사해요 다음 글도 이처럼 예쁘길 바라요 작가님 항상 응원할게요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>kkk
+                        </td>
+                        <td> 대체 이 결혼으로 현우가 이룰, 얻을 수 있는 게 뭐길래.. 사랑해서 데리고 잇는 것도 아닌데 미사 좀 그냥 보내 줘
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>시크
+                        </td>
+                        <td> 윤하가 미사 걱정안하게 잘 지내는걸로 생각하게 미친듯이 열심히 운동한 보람이 있네요.. ㅎ 내가 왜 다 좋고 행복한지 ㅋ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Qwer
+                        </td>
+                        <td> 작가님 소설은 정말 다 재미있어요. 이번이야기는 특히 좋았어요. 윤하와 미사가 행복해서 너무 좋아요. 잘 읽었어요^^♡
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>별사탕
+                        </td>
+                        <td> 그 하룻밤 사이, 현우가 파혼은 안된다고.. 윤하 끌어내려서 앞길 막겠다고 했구나.. 휴
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>해시의 신루 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'해시의 신루'의 리뷰를 남겨주세요 ๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>아쿠아밴드
+                        </td>
+                        <td>
+                            조선시대 세종대왕의 아들이자 훗날 ‘문종’이 되는 세자 ‘이향’과 미래를 보는 여인 ‘해루’가 펼치는 이야기들을 담고 있다. 작가의 두드러진
+          ‘감각’이 돋보이는 소설로 요즘 독자들이 역사 로맨스 소설에서 원하는 바가 무엇인지 정확히 알고 그를 잘 활용하는 느낌이다. 우리가 역사 속에서 익히 들어오던 인물들의 이름이 아주 심심치 않게
+          등장해 실제 역사와 비교해 상상해 보는 재미도 있다.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>퀸
+                        </td>
+                        <td>
+                            나는 윤이수 작가님 글 중에 해시의 신루를 가장 애정한다. 물론 주관적인 내 취향에 따른 것이지만, 구그달 보다 해시의 신루가 더 재밌었다. 내가 이 글을 읽은 게 어느덧 4년 전이 되었는데 아직도 종종 생각나서 읽는다. 드라마화가 결정됐다는 소식을 전에 얼핏 한 번 들은 것 같다. 드라마화를 정말 그 누구보다 바라면서 동시에 바라지 않는다. 드라마화가 되면 정시에 달려가서 본방사수 할테지만 글로 읽으면서 내가 상상한 이미지의 해루, 전하, 중전, 세자가 있기에.. 그냥.. 결론은, 작가님 사랑한다구요. 간택-왕들의 향연도 챙겨보고 있습니다.ㄹ
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>하얀머리
+                        </td>
+                        <td> 친부모님 새부모님 시부모님들이 전부 저렇게 해루를 귀하게 여겨주니 우리 해루 향이랑 오래오래 건강하고 행복하길ㅜㅜ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>렌즐링
+
+                        </td>
+                        <td> 내 최애작품ㅠㅠ 재주행 중인데 보고 또봐도 너무 재밌어요ㅠㅠ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>서리
+                        </td>
+                        <td> 작가님께서는 실존 인물들을 '모티브'로 삼아 이야기를 새로이 창작하시는 것이지, 실제로 있었던 일을 소설로 쓰시는 게 아닙니다. 실제 역사에서 누가 어떤 일을 겪었던 어떻게 삶을 끝맺었던 신경쓰지 마시고 소설에만 집중하세요. 하나의 평행세계라 생각하고 보시면 편합니다.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>사유링
+                        </td>
+                        <td> 3일동안 쿠키모으고 쓰고 하면서 끝까지 읽었네요 참 담백하고 내용도 알차서 재밌었습니다 다른 작품도 뵈러 갈게요 감사합니다
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>pim
+                        </td>
+                        <td> 2일간 날밤 새가며 거짓없이 하루 쪽잠 3시간 자가며 푹 빠져읽었습니다. 감사합니다. 부디 다른 이야기로도 만날수있길 빕니다.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>김선웅
+                        </td>
+                        <td> 이 소설이 나오지 꽤 오래 됐나보내요 .2016년 댓글도 보이고~~ 그런데 시간이랑 상관없이 재미있게 잘보고 있네요^^ 해루의 식성도 눈치없는 궁생활도 연예세포도요~~~
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>시크
+                        </td>
+                        <td> 아래 댓글님은 글 제대로 안읽으시는듯.. 그때 그거 안팔았으면 굶어죽었다고 하잖아요 도박하려고 한게 아니라 해루랑 밥 먹으려고 판건데요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>피치쌤
+                        </td>
+                        <td> 치밀하게 짜여진 중국 회귀물을 보다 여기로 오니 전개가 허술하긴 하네요ㅋㅋㅋ 악역도 귀여울 정도ㅋㅋㅋ 그래도 오히려 무겁지 않아서 좋아용ㅎㅎ
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>호시
+                        </td>
+                        <td> 해루 물건 몰래 가져가 저당잡혀 돈쓰고 해루덕에 번 돈으로 갚다 해루 돈 훔쳐 이자 갖다준건데 뭐 대단한 마음인듯 포장인지...
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

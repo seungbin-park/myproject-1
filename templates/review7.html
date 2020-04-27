@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>법대로 사랑하라 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'법대로 사랑하라'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>댕댕
+                        </td>
+                        <td> 법에 관련된 소설이지만 머리가 아프지 않다는 것이 이 소설의 최고 장점이라고 할 수 있어요. 로맨스라는 장르에 충실하면서도 배경으로 잡은 법 관련 얘기들도 허투로
+                            쓰시지 않으셔서 읽는 내내 대박이란 말 밖에 할 수 없었어요. 글을 엄청 잘 쓰시는 변호사가 쓴 소설이라고 생각하고 읽어도 납득이 될 정도인데 머리가 어지럽지 않고 또 법 관련 내용으로 너무
+                            치우친다거나 하지 않아서 정말 좋았습니다!!
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>냥이
+                        </td>
+                        <td> 아니 왜 때려..세상 스윗하게 배려해 줬구만.. 여자든 남자든 휘둘러 맞는건 다 폭력입니다. 남자라고 덜 아프고 그런거 없어요..
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>아랑이
+                        </td>
+                        <td> 유리가 정호아버지에게 사과받고나니 문득 아빠생각이 나면서 보고싶나봐요..라면국물이 먹고싶은것이..
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>이은순
+
+                        </td>
+                        <td> 에궁~~ 쉽지는 않지만 세상일이 또 그런거지 오죽하니 어불렁 더불렁 산다 할까 잘 해보자~~ 예쁘게 살아보자~~ 유리 정호야~~~~
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>김니무
+                        </td>
+                        <td>사랑~~ 남녀간의 사랑~ 완전한 타인들이 완전한 관계가되는~ 모두들 힘냅시다 홧팅~~~
+
+                    </tr>
+                    <tr>
+                        <td>희령
+                        </td>
+                        <td> 둘은 모 넘잘됐고 서원이 양복사주어야될거 같아 둘의결합에 젤루 지대한 공신이니 불에서 구해 섬에서 보내줘 큰절해라~~ 서원에게도 얼른 좋은인연이나타나길~~~
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>아랑이
+                        </td>
+                        <td> 영화의 한 장면~~ 근데 실제론 입국장과 출국장 서로다르지않나 아주 쬐꼬만 시골공항 아닌바에는~ ㅋ ㅋ ㅋ~~~ 곧 다시 만나게되겠죠~ 꼭 만나야 할 사람들이니까~~~~
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>이인순
+                        </td>
+                        <td> 새삼스럽게 사랑하고 결혼해서 사는 모든이들 감사해야 할것같아요 둘의맘 안으로만 모든게 되지는 않을수도 있는건데 이루어냈으니~ 그나 저나 유리와 정호 참 속상하네요~ 기회가 다시 올까요? 그럴수 있기를~~~
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>이인순
+                        </td>
+                        <td> 이렇게 감동적이고 멋진 소설을 볼 수 있게 해준 작가님♡ 감사하고 사랑해요. 다른 작품도 꼭!!! 읽을게요. 떡밥이 많아서 다른 작품 쓰기가 편하시겠어요ㅎㅎ 강추하는 작품이에요 다만 텅장이 될 수 있다는 경고를ㅎㅎ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>ho
+                        </td>
+                        <td> 이렇게 감동적이고 멋진 소설이 있다니!!! 작가님 사랑합니다♡ 정호와 유리가 서로의 사랑으로 성장하는, 사회의 정의를 위한 법조인으로 서가는 멋진 글이네요!!! 드라마로 꼭 만들어지면 좋겠어요. 이 시대의 희망이 될거에요!!! 좋은 글이네요!!!
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>포랑이
+                        </td>
+                        <td> 그래요 서원쌤도넘힘들고 어렸으니 그때일로위안삼고 버텼을지도~ 그렇지만 혼자만의마음이 꼭 누군가에게 닿을수는 없겠죠 힘냅시다 서원쌤~~ 글구 유리 정말멋지다 구분정확해~~ 사이다 여주 만세~~~~~~^^
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

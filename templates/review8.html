@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>너에게로 중독 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'너에게로 중독'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>아이스티
+                        </td>
+                        <td> 로맨스 소설이 갖춰야 할 자연스러운 감정선과 탄탄한 세계관을 적절히 섞어놓음으로써 소설 후반부로 갈수록 계급 사회의 틀을 벗어난 등장인물들의 사랑 방식을 보여준다.
+                            진부할 수 있는 초능력 소재이지만, 캐릭터의 매력을 살리고, 세계관을 탄탄히 쌓음으로써 극복함.
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>휴지
+                        </td>
+                        <td> 으어어 세아가 주변인들한테 릭시 좀 그만 물어봤으면ㅠ.ㅠ 갑자기 그렇게 관심가지면 누가봐도 도현이가 릭시같지 않으려나,,,
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>발야구
+                        </td>
+                        <td> 세아가 이현이랑 도현이 한달씩 번갈아 데리고살면 안되겠니?셋이 한집에 살기엔 물건이 안남아날거같구ㅋ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>병아리
+
+                        </td>
+                        <td> 와~역시 시간이 지나도 다들 기억하고 다시 찾는 안테님 작품~제목 뜬거 보고 헉 하며 손이 저절로 움직였어요~~~ 감격이 격하게 밀려옵니닷~~~
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꼬끄
+                        </td>
+                        <td>진짜 완벽하고도, 완벽하다. 이렇게 촘촘하고도 밀도 높은 세계관이 나올 수가 있다니. 모든 요소가 완벽해서 글을 씹을 때마다 목이 턱턱 막히는 기분.
+                    </tr>
+                    <tr>
+                        <td>수연
+                        </td>
+                        <td> 하나씩 곱씹으며 감정을 이입하니 리얼로 가슴이 찌릿. 와... 가상의 이야기에 이렇게까지 사람 마음이 욱신거릴 수가 있나. 문체의 힘이라는 게 새삼, 참으로 대단합니다. 작가님, 멋있어요.
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>아기사자
+                        </td>
+                        <td> 난 또 울고있고 ... 또 숨을 못쉬고 있고 ... 눈치없는 남편은 옆에서 왜 자꾸 시리즈보면서 우냐고 묻고 ㅠ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>소령
+                        </td>
+                        <td> 다시 봐도 넘나 재밌고 멋진 하도현 그리고 조금 찬한 이현 ㅎㅎ 외전이 있으면 정말 좋겠당 ㅠㅠ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>으닝
+                        </td>
+                        <td> 도현이도 십년을 저러고 지내왔을거고 지금은 이현이 때문에 불안하고 초조한건 어쩔수 없을거같음...도현이도 불쌍한데 다들 너무 이현이 편만 드는거 같아서 한마디해봄
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>핑키
+                        </td>
+                        <td> 이현아 너 정말 찐이구나 세아로 인해 이미지같은건 안중에도 없어지다니...어떻게보면 제목의 뜻은 이현이 세아에게 품은 마음일지도... 짠하면서도 멋있는데 슬프다..ㅠㅠ
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>롱고
+                        </td>
+                        <td> 하... 정말... 이 회차의 문장은, 가만히 읽고 있으면 절로 심장이 저릿. 문장을 곱씹으면 곱씹을수록 눈물이 그냥 주르륵... 새벽에 또 눈물 한 바가지.
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

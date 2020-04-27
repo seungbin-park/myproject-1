@@ -32,8 +32,41 @@
         crossorigin="anonymous"></script>
 
     <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Hi+Melody&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Pen+Script&display=swap"
+    rel="stylesheet">
     <style>
+    a{font-size:20px;}
+
+        .star_rating {
+            font-size: 0;
+            letter-spacing: -4px;
+        }
+
+        .star_rating a {
+
+            font-size: 22px;
+
+            letter-spacing: 0;
+
+            display: inline-block;
+
+            margin-left: 5px;
+
+            color: #ccc;
+
+            text-decoration: none;
+
+        }
+
+        .star_rating a:first-child {
+            margin-left: 0;
+        }
+
+        .star_rating a.on {
+            color: #777;
+        }
+
         .strong {
             font-weight: bold;
             font-style: italic;
@@ -41,72 +74,42 @@
             font-family: sans-serif;
         }
 
-        a {
-            text-decoration: underline;
-        }
-
         .card-group {
-            margin-left: 130px;
-            margin-right: 130px;
-        }
-
+      height: 850px;
+      margin-right: 3cm;
+      margin-left: 3cm;
+    }
+       
         .maintext {
+            color: grey;
 
             text-align: center;
         }
 
-        * {
-            font-family: 'Titillium Web', sans-serif;
-            font-family: 'Bitter', serif;
-            font-family: 'Single Day', cursive;
-            font-family: 'Hi Melody', cursive;
-            font-family: 'Jua', sans-serif;
-            font-family: 'Nanum Brush Script', cursive;
-            font-family: 'Do Hyeon', sans-serif;
-        }
+        h5{font-size:30px;}
 
-        .info {
-            margin-left: 400px;
-            margin-right: 400px;
-        }
+* {
+  font-family: 'Gamja Flower', cursive;
+  font-family: 'Hi Melody', cursive;
+  font-family: 'Nanum Brush Script', cursive;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Nanum Pen Script', cursive;
+}
+
+       
+        .but {
+      margin-left: 80px;
+    }
     </style>
     </style>
 </head>
 
 <body>
     <div class="maintext">
-        <h1><span class="strong">NAVERSERIES</span> 리뷰창고</h1>
+        <h1><span class="strong">WEBNOVEL</span>REVIEW</h1>
     </div>
-    <br>
-    <br>
-    <span id=app style=display:none>
-        <div class="info">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">제목</span>
-                </div>
-                <input type="text" class="form-control" id="title" aria-describedby="basic-addon3">
-            </div>
-
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">리뷰</span>
-                </div>
-                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
-                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
-            </div>
-            <div class="order">
-                <button onclick="make_review()" type="button" class="btn btn-primary">리뷰 보기</button>
-            </div>
-        </div>
-    </span>
 
 
-
-
-
-
-    <br>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand">장르 /</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
@@ -117,7 +120,7 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="">로맨스 /</a>
+                    <a class="nav-link" href="http://127.0.0.1:5500/templates/index.html">로맨스 /</a>
                     <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
@@ -149,16 +152,22 @@
                 src="https://comicthumb-phinf.pstatic.net/20170222_150/pocket_1487714597820sUP2x_JPEG/%28%29.jpg?type=m260"
                 width="173" height="300" width="173" height="300" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">장씨세가 호위무사</h5><br>
-                <p class="card-text">네이버 웹툰으로도 연재되고 있을 만큼 많은 인기를 가진 소설입니다. 은거한 과거의 최강자, 정신적 트라우마, 힘을 숨긴 호위무사 등의 설정을 적절히
-                    섞었지만 살짝씩 아쉬운 부분들이 보였습니다.
-                    단점들이 있긴 하지만 취향에 따라서는 큰 문제 없이 스무스하게 넘어갈 만한 정도이기도 해서 이런 설정의 무협을 좋아하신다면 재밌게 읽으실 수 있을 겁니다.
+                <h5 class="card-title">장씨세가호위무사(조형근)</h5>
+                <p class="star_rating">
+                    <a href="#" class="on">★</a>
+                    <a href="#" class="on">★</a>
+                    <a href="#" class="on">★</a>
+          
+                    <a href="#">★</a>
+                    <a href="#">★</a><a>(3/5)</a>
+                  </p>
+                 <img src='https://ifh.cc/g/R4zw6d.png' width="220px" height="350px">
 
+                 <div class="but">
+                <button onclick="hi()" type="button" class="btn btn-outline-success"><a
+                        href="http://127.0.0.1:5500/templates/review22.html">리뷰 보기</a></button>
+                        </div>
 
-
-
-
-                </p><button type="button" class="btn btn-outline-success">리뷰 보기</button>
 
 
 
@@ -170,12 +179,28 @@
                 src="https://comicthumb-phinf.pstatic.net/20191211_91/pocket_15760424703667k5N4_JPEG/2__.jpg?type=m260"
                 width="173" height="300" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">천화일로</h5><br>
-                <p class="card-text"> 베일에 싸인 요소로 독자의 흥미를 유발한다. 요즘 나오는 무협과는 다른 세계관으로 흥미를 유발시킨다. 조금 무모하지만 무대포는 아니고 답답하지 않는
-                    주인공보다 인물들이 조화를 이뤄 전개되어 무협을 보기를
-                    원하신다면 추천한다.
+                <h5 class="card-title">천화일로 (목마)</h5>
+                <p class="star_rating">
 
-                </p><button type="button" class="btn btn-outline-success">리뷰 보기</button>
+                    <a href="#" class="on">★</a>
+          
+                    <a href="#" class="on">★</a>
+          
+                    <a href="#" class="on">★</a>
+                    <a href="#">★</a>
+                    <a href="#">★</a>
+          
+          
+                    <a>(3/5)</a>
+          
+          
+          
+          
+          
+                  </p>
+                  <img src='https://ifh.cc/g/tWD5l9.png'width="220px" height="350px" >
+                  <div class="but"><button onclick="hi()" type="button" class="btn btn-outline-success"><a
+                        href="http://127.0.0.1:5500/templates/review23.html">리뷰 보기</a></button></div>
 
 
             </div>
@@ -185,14 +210,22 @@
                 src="https://comicthumb-phinf.pstatic.net/20200317_137/pocket_1584418050318OzPTW_JPEG/__.jpg?type=m260"
                 width="173" height="300" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">무당패왕</h5><br>
-                <p class="card-text">다른 무협소설과 다른 점이 하나도 없고 그냥 과거 소설들 복사 수준입니다.
-                    돌고 도는 무당 왕따 스승의 제자가 하산-표국- 산적- 지인한테 조공, 수련시켜주기 전형적인 무협패턴. 저는 솔직히 조회수 조작이 절대로 없다고 말 못한다고 보네요.
-                    아직도 무협의 저 냄새를 좋아하는 분들이 2만명이나 있다고 보나요? 90년대 2000년대 초반 구무협 만화로 나온거랑 다른 내용이 있나요?
-                    도대체 이게 왜1등인지도 모르겠고 조사할 수 있으면 문피아에서 자체적으로 좀 했으면 좋겠네요.
-                </p><button type="button" class="btn btn-outline-success">리뷰 보기</button>
+                <h5 class="card-title">무당패왕 (윤신현)</h5>
+                <p class="star_rating">
+                    <a href="#" class="on">★</a>
+                    <a href="#" class="on">★</a>
+                    <a href="#" class="on">★</a>
+          
+                    <a href="#">★</a>
+                    <a href="#">★</a><a>(3/5)</a>
+                  </p>
+               
+                   <img src='https://ifh.cc/g/4XX0Dz.png'width="220px" height="350px"  >
+                   <div class="but">
+                    <button onclick="hi()" type="button" class="btn btn-outline-success"><a
+                        href="http://127.0.0.1:5500/templates/review24.html">리뷰 보기</a></button>
 
-
+                    </div>
 
             </div>
 
@@ -202,13 +235,21 @@
                 src="https://comicthumb-phinf.pstatic.net/20190715_58/pocket_1563167384978zVjaI_JPEG/%28%29.jpg?type=m260"
                 width="173" height="300" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">비 검문도</h5><br>
-                <p class="card-text">네이버 시리즈에서 연재 중인 중국 선협소설, 주인공이 수련을 마치고 고향으로 돌아와 승승장구하는 이야기. 지금까지 읽은
-                    선협 소설 중 스토리가 가장 빠르고 일반 무협 내용에서 선협이 들어간 듯한 느낌. 그냥 저냥 읽을만 하다. 엄청나게 재밌있다는 아니지마 그냥저냥 시간 때우기로 볼만하다.
-                    <button type="button" class="btn btn-outline-success">리뷰 보기</button>
+                <h5 class="card-title">  비 검문도 (주홍지)</h5>
+                <p class="star_rating">
+                    <a href="#" class="on">★</a>
+                    <a href="#" class="on">★</a>
+                   
+                    <a href="#">★</a>
+                    <a href="#">★</a>
+                    <a href="#">★</a><a>(2/5)</a>
+                  </p>
+                <img src='https://ifh.cc/g/Q46OvY.png'width="220px" height="350px" >
+                <div class="but">
+                    <button onclick="hi()" type="button" class="btn btn-outline-success"><a
+                            href="http://127.0.0.1:5500/templates/review25.html">리뷰 보기</a></button>
 
-
-
+                        </div>
 
 
 

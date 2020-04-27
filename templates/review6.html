@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>조선연애실록 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'조선연애실록'의 리뷰를 남겨주세요 ๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>장구님
+                        </td>
+                        <td>
+                            남장여자, 예기치 않은 이별 후 재회 등 흔히 접하는 클리셰가 있더라도 지루할 틈없는 전개는 긴 분량을 무색케 했다. 기대치를 충족시키지 않는 실망스러운 필력에
+                            별점 반개를 떼어냈지만, 나처럼 까탈스럽지 않다면 꿀잼이라고 여길 것이다. 하나 더, 주변인물에 대한 불친절한 전개 때문에 외전을 갈구할테지만, 상상의 나래를 펼치는 게 어렵지 않은 당신이라면 외전
+                            따위는 필요 없음.
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>꾸
+                        </td>
+                        <td>
+                            처음에는 완결 전이라 무료로 읽고, 생각이나서 두 번 더 결재하여 읽었습니다. 대사와 표현의 깊이에 감탄합니다.^^
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>공주왕
+                        </td>
+                        <td> ‘그 입이 요망한데 한번만 부딪히고 가면 안될까’ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ 멘트 너모 설렌다 진짜ㅠㅠㅠ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>정은교
+
+                        </td>
+                        <td> 용희와 완의 달달한 티키타카 넘 재밌어요ㅋㅋ 잔인한 신기형의 말로도 참혹했음 좋겠네요.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>뽀샤시
+                        </td>
+                        <td> 울다가도 웃고 웃다가도 가슴 찡~해서 또다시 울컥.. 너무너무 재미있게 잘읽었네요^^ 드라마로 나왔으면 좋겠어요 ㅎ
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>8246
+                        </td>
+                        <td> 작가님의 필력에 감동하고 갑니다. 글로 읽었지만 머릿속으로 장면 하나하나 그리며 내내 행복하게 감상했습니다~ 이 작품은 드라마로 나와도 좋을 것 같단 생각도
+                            해보네요.(이 방송국놈들아 이 소설 찐!!이랑께?!) 인물 하나하나에 작가님의 애정이 느껴지는 따뜻한 글이었습니다... 저는 이제 작가님의 다른 작품 쿠키 구우러
+                            갈꺼에욧!!
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>모네
+                        </td>
+                        <td> 진짜 최고에요 웃고울고 뻔한거 같았는데 전혀 아니에요 문장 단어 하나하나 진짜 잘 쓰셨어요!!
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>나는초보맘
+                        </td>
+                        <td> 몇일동안 정말 재미있게봤어요 로즈빈님 작품 너무 재미있네요 이제 밀린 퇴근후에 만나요 보러 가야겠어요~^^ 좋은작품 읽을 수 있게 해주셔서 감사합니다 읽는내내 정말 잊을 수 없을것같네요~^^
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>134
+                        </td>
+                        <td> 아ㅠㅠㅠㅠㅠㅠ 이번 화가 어딨는지 몰라서 쿠키 6개를 질렀다ㅠㅠㅠㅠ 다시 봐도 너무 슬프잖아요작가님ㅠㅠㅠㅠㅠㅠㅜㅜㅠㅠ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Qwer
+                        </td>
+                        <td> 어휴.. 짠하다 ㅠ 지담도 안타깝고 ㅠ 홍시찾으로 다닌다는 내용에서 어찌나 코끝이 시큰하던지 .... 지담 ㅠ
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>별사탕
+                        </td>
+                        <td> 서로가 연민이나 사랑을 애절히 구걸한적도 없는대 독자의 마음을 아릿하게 아프게하네요 감동입니다 세자 완 매력터지네요 굿♡♡
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

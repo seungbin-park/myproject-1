@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>허니허니 웨딩 리뷰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+        function is_long(obj) {
+            let content = $(obj).val();
+            console.log(content);
+            console.log(content.length);
+            if (content.length > 140) {
+                alert('리뷰는 140자까지 기록할 수 있습니다.');
+                $(obj).val(content.substring(0, 140));
+            }
+        }
+
+        function make_review() {
+
+            let author = $('#author').val();
+            let review = $('#review').val();
+
+            if (author == '') {
+                alert('저자를 입력해주세요');
+                $('#author').focus();
+                return;
+            } else if (review == '') {
+                alert('리뷰를 입력해주세요');
+                $('#review').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/reviews",
+                data: { author_give: author, review_give: review },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+
+                        $('#author').val('');
+                        $('#review').val('');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/reviews",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let reviews = response['reviews'];
+                        for (let i = 0; i < reviews.length; i++) {
+                            make_card(reviews[i]['author'], reviews[i]['review']);
+                        }
+                    } else {
+                        alert('리뷰를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(author, review) {
+            let temp_html = '<tr>
+
+                < td > '+ author + '</td>\
+            <td>'+ review + '</td>\
+                                </tr > ';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin: 20px 5px auto 5px;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .meta_info {
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="img"></div>
+        <div class="info">
+            <h2>'허니허니 웨딩'의 리뷰를 남겨주세요๑•‿•๑</h2>
+
+        </div>
+        <div class="info">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">저자</span>
+                </div>
+                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">리뷰</span>
+                </div>
+                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
+                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+            </div>
+            <div class="order">
+
+                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+
+            </div>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th class="meta_info" scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>아이링
+                        </td>
+                        <td> 작가의 전 작품을 보지 않은 필자의 입장에서는 주인공보다 주변 인물들이 더 매력적으로 와닿은 것이 아쉬웠다. 해수와 같은 주인공은 요즘 시대와는 맞지 않다고
+                            본다.
+                            글을 읽는 독자는 작가가 의도하지 않더라도 대부분 주인공에게 몰입을 하기 때문에, 답답하게 느껴질 수도 있을 것이라는 생각이 들었다.
+                                      <tr>
+
+                           
+                        </td>
+
+                    </tr>
+                    
+                        <td>지연
+                        </td>
+                        <td> 서로 사랑하는 사이에 믿음이 바탕이 되는게 얼마나 중요한건지 다시 한번 깨닫게 됐네요~ 수줍은듯 당찬 솔직함의 해수와 까칠한듯 다정한 혁준이 덕에 읽는 내내 웃고, 울며 넘 행복한 시간이었습니다^^*
+
+                           
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>열매나라
+                        </td>
+                        <td> 뒤늦게 봐서 아쉽지만 진짜 영화 한 편 본 것 같았어요.. 안타깝고 짠하기도 하고 설레기도 하고..ㅎㅎ 다 좋았는데.. 일러보면 저도 모르게 실소ㅋㅋㅋㅋㅋㅋ
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>SYJ 
+
+                        </td>
+                        <td> "떨어졌다. 그냥 너 먹든가"ㅋㅋㅋㅋ오우 너무 츤츤 대는거 아닌지 ㅋㅋㅋㅋ 고구마가 살짝있지만 그래도 주인공들이 너무 귀여워서 커버됨..
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>다빈
+                        </td>
+                        <td> 웹툰보고 소설로 넘어왔는데 진짜 두번 감동하네요♡ 작가님 수고 많으셨습니다. 그리고 감사합니다♡
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>박혜린
+                        </td>
+                        <td> 하도 못되게 굴어서 남편이 바람나서 낳은줄... 조카 자식도 자식인데 형편이 어려운 것도 아니고 죄 받는다
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>채여닝
+                        </td>
+                        <td> 첨엔 엿들은거 숨기느니라고 그랫다느니 그딴 소리 지껄이면서 더 질질 끄는 구간이라 암걸리겟군 했는데 웬걸...짜릿하다...
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>아프로디테
+                        </td>
+                        <td> 작가님 필력이 너무 좋으신듯. 잘 읽혀지고 감정이입이 잘되고 혁준이랑 해수 말투랑 말장난 하는게 너무 매력있고 좋았어요. 왠만한 소설 좀 읽어봤지만 로맨스물인데 필력에 놀라긴 첨인듯 ㄷㄷ..대단하십니다. 다른 작품도 관심있게 볼게요
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>좋아연
+                        </td>
+                        <td> 내가 "죽을 것 같다"라고 댓글 쓰려했는데 이미 쓰신 분이 계셔서 공감하는 마음에 좋아요 눌렀어요 !!! 저 같은 분이 많을 거라고 믿어 의심치 않습니다!!!!!!!!
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>그레이
+                        </td>
+                        <td> 해수 꼭 나중에는 독사쌤한테 사랑 듬뿍받고 행복했으면 좋겠다ㅠㅠㅠ
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>봄봄봄
+                        </td>
+                        <td> 완전ㅜㅠ 우어어~~~~딱원하던로맨스ㅜㅠ 최고였어요~~~ 달달한 스토리 좋아하시면 딱 좋아요
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>

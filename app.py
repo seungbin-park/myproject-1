@@ -1,38 +1,41 @@
-from bs4 import BeautifulSoup
-import requests
-from selenium import webdriver
+ 
+from flask import Flask, render_template, jsonify, request
 
-import os
-import time
+app = Flask(__name__)
 
-options = webdriver.ChromeOptions() 
-options.add_argument('headless') 
-options.add_argument('window-size=1920x1080') 
-options.add_argument("disable-gpu") 
+from pymongo import MongoClient  
 
-path = os.path.dirname(__file__)
-driver = webdriver.Chrome(path + '/chromedriver', options=options)
+client = MongoClient('localhost', 27017) 
+db = client.dbsparta 
 
-# headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-# data = requests.get('https://series.naver.com/novel/detail.nhn?productNo=1200383',headers=headers)
 
-driver.get('https://series.naver.com/novel/detail.nhn?productNo=1200383')
-time.sleep(2)
 
-# 해당 페이지의 html 소스 선택
-html = driver.page_source
-# html 파싱하기
-soup = BeautifulSoup(html, 'html.parser')
-comments = soup.select_one('#comment_focus')
+@app.route('/')
+def home():
+    return render_template('')
 
-for review in comments.select('div.cbox_comment_area'):
-    #1. nick name 가져오기
-    nick_name = review.select_one("span.cbox_nick_name").text
 
-    #2. 내용 가져오기(cbox)
-    content = review.select_one("div.cbox_desc_comment>p").text
+@app.route('/reviews', methods=['POST'])
+def write_review():
+    author_receive = request.form['author_give']
+    review_receive = request.form['review_give']
+    
 
-    #3. 가져온 자료 보이게 하기(??)
-    print(nick_name, content)
+    review = {
+        'author': author_receive,
+        'review': review_receive,
+        
+    }
 
-driver.quit()
+    db.reviews.insert_one(review)
+    return jsonify({'result': 'success', 'msg': '주문이 성공적으로 작성되었습니다.'})
+
+
+@app.route('/reviews', methods=['GET'])
+def read_reviews():
+    reviews = list(db.reviews.find({}, {'_id': 0}))
+    return jsonify({'result': 'success', 'reviews': reviews})
+
+
+if __name__ == '__main__':
+    app.run('0.0.0.0', port=5000, debug=True)
