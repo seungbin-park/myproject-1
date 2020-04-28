@@ -40,8 +40,7 @@ def write_review():
 
     review = {
         'author': author_receive,
-        'review': review_receive,
-        
+        'review': review_receive
     }
 
     db.reviews.insert_one(review)
