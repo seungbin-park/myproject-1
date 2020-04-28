@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "venv/bin/python",
+    "python.pythonPath": "C:\\Users\\tmdql\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
     "python.testing.nosetestArgs": [
         "venv"
     ],
