@@ -1,280 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <!-- Webpage Title -->
-    <title>구르미 그린달빛 리뷰</title>
+    <head>
+        <!-- Webpage Title -->
+        <title>구르미 그린달빛 리뷰</title>
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
-    <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+        <!-- 구글폰트 -->
+        <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#orders-box').html('');
-            listing();
-        });
-        
-        function is_long(obj) {
-            let content = $(obj).val();
-            console.log(content);
-            console.log(content.length);
-            if (content.length > 140) {
-                alert('리뷰는 140자까지 기록할 수 있습니다.');
-                $(obj).val(content.substring(0, 140));
-            }
-        }
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#orders-box').html('');
+                listing();
+            });
 
-        function make_review() {
-
-            console.log('make_review');
-
-            let author = $('#author').val();
-            let review = $('#review').val();
-
-            if (author == '') {
-                alert('저자를 입력해주세요');
-                $('#author').focus();
-                return;
-            } else if (review == '') {
-                alert('리뷰를 입력해주세요');
-                $('#review').focus();
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/reviews",
-                data: {
-                    author_give: author, 
-                    review_give: review 
-                },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        alert(response['msg']);
-
-                        $('#author').val('');
-                        $('#review').val('');
-                        window.location.reload();
-                    }
+            function is_long(obj) {
+                let content = $(obj).val();
+                console.log(content);
+                console.log(content.length);
+                if (content.length > 140) {
+                    alert('리뷰는 140자까지 기록할 수 있습니다.');
+                    $(obj).val(content.substring(0, 140));
                 }
-            })
-        }
+            }
 
-        function listing() {
-            $.ajax({
-                type: "GET",
-                url: "/reviews",
-                data: {},
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        let reviews = response['reviews'];
-                        for (let i = 0; i < reviews.length; i++) {
-                            make_card(reviews[i]['author'], reviews[i]['review']);
+            function make_review() {
+
+                console.log('make_review');
+
+                let author = $('#author').val();
+                let review = $('#review').val();
+
+                if (author == '') {
+                    alert('저자를 입력해주세요');
+                    $('#author').focus();
+                    return;
+                } else if (review == '') {
+                    alert('리뷰를 입력해주세요');
+                    $('#review').focus();
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/reviews/1",
+                    data: {
+                        author_give: author,
+                        review_give: review
+                    },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert(response['msg']);
+
+                            $('#author').val('');
+                            $('#review').val('');
+                            window.location.reload();
                         }
-                    } else {
-                        alert('리뷰를 받아오지 못했습니다');
                     }
-                }
-            })
-        }
+                })
+            }
 
-        function make_card(author, review) {
-            let temp_html = `<tr>
+            function listing() {
+                $.ajax({
+                    type: "GET",
+                    url: "/reviews/1",
+                    data: {},
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            let reviews = response['reviews'];
+                            for (let i = 0; i < reviews.length; i++) {
+                                make_card(reviews[i]['author'], reviews[i]['review']);
+                            }
+                        } else {
+                            alert('리뷰를 받아오지 못했습니다');
+                        }
+                    }
+                })
+            }
+
+            function make_card(author, review) {
+                let temp_html = `<tr>
                     <td>${author}</td>
                     <td>${review}</td>
                 </tr >`;
-            $('#orders-box').append(temp_html);
-        }
-    </script>
+                $('#orders-box').append(temp_html);
+            }
+        </script>
 
-    <style type="text/css">
-        * {
-            font-family: 'Do Hyeon', sans-serif;
-        }
+        <style type="text/css">
+            * {
+                font-family: 'Do Hyeon', sans-serif;
+            }
 
-        .wrap {
-            width: 500px;
-            margin: auto;
-        }
+            .wrap {
+                width: 500px;
+                margin: auto;
+            }
 
 
-        .info {
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
+            .info {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
 
-        .user-info {
-            margin: 20px 5px auto 5px;
-        }
+            .user-info {
+                margin: 20px 5px auto 5px;
+            }
 
-        h1,
-        h5 {
-            display: inline;
-        }
+            h1,
+            h5 {
+                display: inline;
+            }
 
-        .order {
-            text-align: center;
-        }
+            .order {
+                text-align: center;
+            }
 
-        .orders {
-            margin-top: 100px;
-        }
+            .orders {
+                margin-top: 100px;
+            }
 
-        .meta_info {
-            width: 20%;
-        }
-    </style>
-</head>
+            .meta_info {
+                width: 20%;
+            }
+        </style>
+    </head>
 
-<body>
-    <div class="wrap">
-        <div class="img"></div>
-        <div class="info">
-            <h2>'구르미 그린달빛'의 리뷰를 남겨주세요๑•‿•๑</h2>
+    <body>
+        <div class="wrap">
+            <div class="img"></div>
+            <div class="info">
+                <h2>'구르미 그린달빛'의 리뷰를 남겨주세요๑•‿•๑</h2>
 
-        </div>
-        <div class="info">
+            </div>
+            <div class="info">
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">저자</span>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">저자</span>
+                    </div>
+                    <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
                 </div>
-                <input type="text" class="form-control" id="author" aria-describedby="basic-addon3">
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">리뷰</span>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">리뷰</span>
+                    </div>
+                    <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review"
+                        cols="30" rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
                 </div>
-                <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
-                    rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
+                <div class="order">
+                    <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+                </div>
             </div>
-            <div class="order">
-                <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
+            <div class="orders">
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th class="meta_info" scope="col">저자</th>
+                            <th scope="col">리뷰</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-box">
+                        <tr>
+                            <td>당근
+                            </td>
+                            <td> 질리고 질릴 만한 조선시대 배경에 남장여자가 주인공인데 주인공인 라온이 환관이 된다는 설정이 새롭습니다. 물론 개별 에피소드들은 조금은 평이한 것들도 없지는
+                                않지만 라온이 환관으로서 살아남기 위해서 보여주는 노력들은 독자들의 흥미를 끌만한 충분한 사유가 됩니다.
+                                조선시대를 배경으로 한 달달한 로맨스 소설을 원하시는 분께는 강추합니다!!
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>자작나무 숲
+                            </td>
+                            <td> 하.....ㅠㅠ 드라마로 보고싶다ㅠㅠ 뭐 봤지만 봐도 봐도 재밌다... 라온이릐 매력은 어디까지 인지 ㅜㅜ
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>최서연
+                            </td>
+                            <td> 오ㅓ 이걸 지금 보다니 몰입력도 장난아니고 전개속도도 너무 질질 끌지않고 딱 좋은 작품인듯
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>마마보이
+
+                            </td>
+                            <td> 팔찌 줬으면 이어졌을텐데.. 아쉬움이 있지만 그래서 더 감명깊게 읽을 것 같아요 !!!
+
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>뀨우빵이
+                            </td>
+                            <td> 성별다른 일란성나올수있음 근데 대부분여자는 터너증후군이고 남자는불임이될가는성이많음 정상으로태어날확률도있다는데 거의 희박하고 일단 성별다른일란성자체가
+                                잘나올수가없는데.. 그래도 재미있게 읽었움
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>BOSS
+                            </td>
+                            <td> 헐 드라마로 엄청 유명할때 너무 바빠서 못봤는데 소설으로 만나게 되다니ㅠㅠㅠㅠ와ㅠㅠㅠ 2틀동안 몰아서 봤는데 너무 여운이 남고 재밌어요 ㅜㅜ
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>려린
+                            </td>
+                            <td> 역사배경지식에 문외한인 저로서는 어떻게 이런글을 쓰셨는지 정말 놀라울따름입니다 ㅎㅎ 여러사람을 이렇게 엮어서 쓸수있다는게 신기해요.. 드라마는 보지않았었고
+                                이번에
+                                소설로 접했는데 여주의 강단이 다른소설과는 달라서 보기좋았어요! 정말 잘읽었습니다^^
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>HEPGINNY
+                            </td>
+                            <td> 이거 그냥 책사서 보시는거 추천드려요... 저 지금까지 책 7번정도 돌려보고 있습니다ㅎㅎ 봐도 봐도 명작입니다
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>하얀머리
+                            </td>
+                            <td> 원래 역사 스토리 별로 안 좋아하는데 이거 읽고 바꼈습니다 캐릭터마다 너무 개성있어요
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>쏭쏭
+                            </td>
+                            <td> 읽으면서 살짝 아쉬운 느낌이 없지않아 있었지만 그러저럭 재미있게 읽었어요~~
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>혜리
+                            </td>
+                            <td> 너무나 재밌게 잘봤습니다ㅠㅠ!!! 이 웹소설을 보면서 같이 웃고 울고 한지가 엊그제 같은데 벌써 끝이 났네요.. 감사합니다!!
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="orders">
-            <table class="table">
-                <thead>
-                    <tr>
-
-                        <th class="meta_info" scope="col">저자</th>
-                        <th scope="col">리뷰</th>
-                    </tr>
-                </thead>
-                <tbody id="orders-box">
-                    <tr>
-                        <td>당근
-                        </td>
-                        <td> 질리고 질릴 만한 조선시대 배경에 남장여자가 주인공인데 주인공인 라온이 환관이 된다는 설정이 새롭습니다. 물론 개별 에피소드들은 조금은 평이한 것들도 없지는
-                            않지만 라온이 환관으로서 살아남기 위해서 보여주는 노력들은 독자들의 흥미를 끌만한 충분한 사유가 됩니다.
-                            조선시대를 배경으로 한 달달한 로맨스 소설을 원하시는 분께는 강추합니다!!
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>자작나무 숲
-                        </td>
-                        <td> 하.....ㅠㅠ 드라마로 보고싶다ㅠㅠ 뭐 봤지만 봐도 봐도 재밌다... 라온이릐 매력은 어디까지 인지 ㅜㅜ 
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>최서연
-                        </td>
-                        <td> 오ㅓ 이걸 지금 보다니 몰입력도 장난아니고 전개속도도 너무 질질 끌지않고 딱 좋은 작품인듯
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>마마보이
-
-                        </td>
-                        <td> 팔찌 줬으면 이어졌을텐데.. 아쉬움이 있지만 그래서 더 감명깊게 읽을 것 같아요 !!!
-
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>뀨우빵이
-                        </td>
-                        <td> 성별다른 일란성나올수있음 근데 대부분여자는 터너증후군이고 남자는불임이될가는성이많음 정상으로태어날확률도있다는데 거의 희박하고 일단 성별다른일란성자체가 잘나올수가없는데.. 그래도 재미있게 읽었움
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>BOSS
-                        </td>
-                        <td> 헐 드라마로 엄청 유명할때 너무 바빠서 못봤는데 소설으로 만나게 되다니ㅠㅠㅠㅠ와ㅠㅠㅠ 2틀동안 몰아서 봤는데 너무 여운이 남고 재밌어요 ㅜㅜ
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>려린
-                        </td>
-                        <td> 역사배경지식에 문외한인 저로서는 어떻게 이런글을 쓰셨는지 정말 놀라울따름입니다 ㅎㅎ 여러사람을 이렇게 엮어서 쓸수있다는게 신기해요.. 드라마는 보지않았었고 이번에
-                            소설로 접했는데 여주의 강단이 다른소설과는 달라서 보기좋았어요! 정말 잘읽었습니다^^
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>HEPGINNY
-                        </td>
-                        <td> 이거 그냥 책사서 보시는거 추천드려요... 저 지금까지 책 7번정도 돌려보고 있습니다ㅎㅎ 봐도 봐도 명작입니다
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>하얀머리
-                        </td>
-                        <td> 원래 역사 스토리 별로 안 좋아하는데 이거 읽고 바꼈습니다 캐릭터마다 너무 개성있어요
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>쏭쏭
-                        </td>
-                        <td> 읽으면서 살짝 아쉬운 느낌이 없지않아 있었지만 그러저럭 재미있게 읽었어요~~
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-                        <td>혜리
-                        </td>
-                        <td> 너무나 재밌게 잘봤습니다ㅠㅠ!!! 이 웹소설을 보면서 같이 웃고 울고 한지가 엊그제 같은데 벌써 끝이 났네요.. 감사합니다!!
-
-                        </td>
-
-                    </tr>
-
-
-                </tbody>
-            </table>
-        </div>
-    </div>

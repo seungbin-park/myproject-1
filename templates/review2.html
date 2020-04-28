@@ -61,7 +61,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/reviews",
+                url: "/reviews/2",
                 data: {
                     author_give: author, 
                     review_give: review 
@@ -81,7 +81,7 @@
         function listing() {
             $.ajax({
                 type: "GET",
-                url: "/reviews",
+                url: "/reviews/2",
                 data: {},
                 success: function (response) {
                     if (response['result'] == 'success') {
