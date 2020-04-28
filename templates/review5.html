@@ -27,6 +27,11 @@
     <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+        
         function is_long(obj) {
             let content = $(obj).val();
             console.log(content);
@@ -38,6 +43,8 @@
         }
 
         function make_review() {
+
+            console.log('make_review');
 
             let author = $('#author').val();
             let review = $('#review').val();
@@ -55,7 +62,10 @@
             $.ajax({
                 type: "POST",
                 url: "/reviews",
-                data: { author_give: author, review_give: review },
+                data: {
+                    author_give: author, 
+                    review_give: review 
+                },
                 success: function (response) {
                     if (response['result'] == 'success') {
                         alert(response['msg']);
@@ -67,11 +77,6 @@
                 }
             })
         }
-
-        $(document).ready(function () {
-            $('#orders-box').html('');
-            listing();
-        });
 
         function listing() {
             $.ajax({
@@ -92,11 +97,10 @@
         }
 
         function make_card(author, review) {
-            let temp_html = '<tr>
-
-                < td > '+ author + '</td>\
-            <td>'+ review + '</td>\
-                                </tr > ';
+            let temp_html = `<tr>
+                    <td>${author}</td>
+                    <td>${review}</td>
+                </tr >`;
             $('#orders-box').append(temp_html);
         }
     </script>
@@ -162,7 +166,7 @@
                 <textarea class="form-control" aria-describedby="basic-addon3" name="bookReview" id="review" cols="30"
                     rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="is_long(this)"></textarea>
             </div>
-            <div class="order">
+            <div class="review">
 
                 <button onclick="make_review()" type="button" class="btn btn-outline-success">리뷰 작성하기</button>
 

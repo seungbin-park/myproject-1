@@ -92,12 +92,11 @@
         }
 
         function make_card(author, review) {
-            let temp_html = '<tr>\
-                                        <td>'+ author + '</td>\
-                                        <td>'+ review + '</td>\
-                                       
-                                    </tr>';
-            $('#reviews-box').append(temp_html);
+            let temp_html = `<tr>
+                    <td>${author}</td>
+                    <td>${review}</td>
+                </tr >`;
+            $('#orders-box').append(temp_html);
         }
     </script>
 

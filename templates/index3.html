@@ -4,72 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fantasy</title>
-  <!-- Webpage Title -->
-  <title>myproject</title>
-
-  <link href="/css/comment.css?1577779699000" rel="stylesheet" type="text/css" />
-  <link href="/css/nstore_util.css?1580452906000" rel="stylesheet" type="text/css" />
-  <link href="/css/nstore_cont.css?1580452906000" rel="stylesheet" type="text/css" />
-  <link href="/css/skip/nstore_js.css?1577779699000" rel="stylesheet" type="text/css" />
-  <link href="/css/nstore.css?1581574785000" rel="stylesheet" type="text/css" />
-
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>CSS Grid Responsive Site</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-  <!-- JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-
   <!-- 구글폰트 -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Hi+Melody&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Pen+Script&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+  <style type="text/css">
+     a:link { color:green; text-decoration: none;}
 
-  <style>
-    .strong {
-      font-weight: bold;
-      font-style: italic;
-      font-size: 70px;
-      font-family: sans-serif;
-    }
-
-    a{font-size:20px;}
-
-    .card-group {
-      height: 850px;
-      margin-left: 3cm;
-      margin-right: 3cm;
-    }
-
-    .maintext {
-      color: grey;
-
-      text-align: center;
-    }
-
-    h5{font-size:31px;}
-
-    * {
-      font-family: 'Gamja Flower', cursive;
-      font-family: 'Hi Melody', cursive;
-      font-family: 'Nanum Brush Script', cursive;
-      font-family: 'Nanum Gothic', sans-serif;
-      font-family: 'Nanum Pen Script', cursive;
-    }
    
-
   
+    /* Core Styles */
+    
 
     .star_rating {
       font-size: 0;
@@ -99,127 +48,258 @@
     .star_rating a.on {
       color: #777;
     }
-    .but {
-      margin-left: 80px;
+
+    .strong {
+      font-weight: bold;
+      font-style: italic;
+      font-size: 70px;
+      font-family: sans-serif;
     }
+
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: white;
+      color: pink font-size: 1.1em;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    img {
+      display: block;
+
+    }
+    h1{font-size: 90px;}
+
+    h3 {
+      font-size: 22px;
+    }
+
+    p {
+      margin: 0;
+      padding: 1em 0;
+    }
+
+
+
+
+
+    /* Header Showcase */
+
+    #showcase {
+      min-height: 450px;
+      color: #fff;
+      text-align: center;
+    }
+
+    #showcase .bg-image {
+      position: absolute;
+      background:
+        url("https://c.pxhere.com/photos/b1/f7/typewriter_book_notebook_paper_writing_write_antique_retro-718717.jpg!d");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100%;
+      height: 400px;
+      z-index: -1;
+    }
+
+    #showcase h1 {
+      padding-top: 100px;
+      padding-bottom: 0;
+    }
+
+    #showcase .content-wrap,
+    #section-a .content-wrap {
+      padding: 0 1.5em;
+    }
+
+    /* Section A */
+
+    #section-a {
+      background: #eaeaea;
+      color: #333;
+      padding-bottom: 2em;
+    }
+
+    /* Section B */
+
+    #section-b {
+      padding: 2em 1em 1em;
+    }
+
+    #section-b ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #section-b li {
+      margin-bottom: 1em;
+      background: #fff;
+      color: black
+    }
+
+    .card-content {
+      padding:1.5em
+    }
+
+
+
+
+
+
+    /* Footer */
+
+    #main-footer {
+      padding: 2em;
+      background-color: #8FBC8F;
+
+      text-align: center;
+    }
+
+    #main-footer a {
+      color: #2690d4;
+      text-decoration: none;
+    }
+
+    /* Media Queries */
+
+    @media (min-width: 700px) {
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr repeat(2, minmax(auto, 25em)) 1fr;
+      }
+
+      #section-a .content-text {
+        columns: 2;
+        column-gap: 2em;
+      }
+
+      #section-a .content-text p {
+        padding-top: 0;
+      }
+
+      .content-wrap,
+      #section-b ul {
+        grid-column: 2/4;
+      }
+
+      .box,
+      #main-footer div {
+        grid-column: span 2;
+      }
+
+      #section-b ul {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      #section-b li {
+        width: 31%;
+      }
+    }
+
+    .short {
+      font-family: 'Gamja Flower', cursive;
+      font-size: 30px;
+    }
+
+    .navbar {
+      font-size: 20px;
+
+      margin-left: 6.4cm;
+      margin-right: 6.4cm;
+
+      @font-face {
+        font-family: 'MapoPeacefull';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoPeacefullA.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+    }
+   
+ 
   </style>
-  
+
 </head>
 
 <body>
-  <div class="maintext">
-    <h1><span class="strong">WEBNOVEL</span> REVIEW</h1>
-  </div>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">장르 /</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-      aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <!-- Header Showcase -->
+  <header id="showcase" class="grid">
+    <div class="bg-image"></div>
+    <div class="content-wrap"><br>
+      <h1>WELCOME</h1>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active">
-          <a class="nav-link" href="http://127.0.0.1:5500/templates/index.html">로맨스 /</a>
-          <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="http://127.0.0.1:5500/templates/index2.html">로판 /</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="http://127.0.0.1:5500/templates/index3.html">판타지 /</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="http://127.0.0.1:5500/templates/index4.html">무협</a>
-        </li>
 
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
 
     </div>
+  </header>
 
 
-  </nav>
-  <br>
-  <br>
-
-  <div class="card-group">
-    <div class="card">
-      <img class="card-img-top"
-        src="https://comicthumb-phinf.pstatic.net/20161228_280/pocket_1482887340897zob42_JPEG/image.JPEG?type=m260"
-        width="173" height="300" width="173" height="300" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">달빛조각사 (남희성)</h5>
-        <p class="star_rating">
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-
-          <a href="#">★</a><a>(4/5)</a>
-        </p>
-      <img src='https://ifh.cc/g/N3bTce.png'  width="220px" height="350px">
-      <div class="but">
-       <button onclick="hi()" type="button" class="btn btn-outline-success"><a
-            href="http://127.0.0.1:5500/templates/review18.html">리뷰 보기</a></button></div>
-
-
-        </li></a>
-      </div>
-    </div>
-    <div class="card">
-      <img class="card-img-top"
-        src="https://comicthumb-phinf.pstatic.net/20160822_152/pocket_1471849279299JgBck_JPEG/___.jpg?type=m260"
-        width="173" height="300" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">이계진입 리로디드(경배)</h5>
-        <p class="star_rating">
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-
-          <a href="#">★</a><a>(4/5)</a>
-        </p>
-       <img src='https://ifh.cc/g/IpadXc.png'width="220px" height="350px">
-      
-       <div class="but"><button onclick="hi()" type="button" class="btn btn-outline-success"><a
-        href="http://127.0.0.1:5500/templates/review19.html">리뷰 보기</a></button></div>
-
-      </div>
-    </div>
-    <div class="card">
-      <img class="card-img-top"
-        src="https://comicthumb-phinf.pstatic.net/20170202_69/pocket_1486012777918sOrk0_JPEG/144147_660.jpg?type=m260"
-        width="173" height="300" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">성운을 먹는자 (김재한)</h5>
-        <p class="star_rating">
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-          <a href="#" class="on">★</a>
-
-          <a href="#">★</a>
-          <a href="#">★</a><a>(3/5)</a>
-        </p><img src='https://ifh.cc/g/oxbDim.png'width="220px" height="350px">
-        <div class="but">
-       <button onclick="hi()"
-          type="button" class="btn btn-outline-success"><a href="http://127.0.0.1:5500/templates/review20.html">리뷰 보기</a></button>
-
+  <!-- Main Area -->
+  <main id="main">
+    <!-- Section A -->
+    <section id="section-a" class="grid">
+      <div class="content-wrap"><br>
+        <h2 class="content-title"> Web & Novel Reviewstore </h2>
+        <div>
+          <p>높기만 한 별점과 짧은 리뷰로 뭘 볼지 고민된다면<br>Web & Novel Reviewstore를 통해 자신의 소설 취향을 찾고<br> 솔직한 리뷰를 남겨 공유해봐요!!!!</p>
         </div>
+      </div>
+    </section>
+    <section id="section-b" class="narvbar"> </section>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand">장르 /</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">로맨스 /</a>
+
+
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/rofan">로판 /</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/fantagy">판타지 /</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/marsharl">무협</a>
+          </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
 
       </div>
 
-    </div>
-    <div class="card">
-      <img class="card-img-top"
-        src="https://comicthumb-phinf.pstatic.net/20150716_146/pocket_14370292539213Jf6y_JPEG/__1.jpg?type=m260"
-        width="173" height="300" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">세월의 돌 (전민희)</h5>
+
+    </nav>
+
+
+
+
+
+    <!-- Section B -->
+
+    <section id="section-b" class="grid">
+      <ul>
+        <li>
+            <div class="card">
+              <img
+                src="https://comicthumb-phinf.pstatic.net/20161228_280/pocket_1482887340897zob42_JPEG/image.JPEG?type=m260"
+                width="245px" height="230px">
+              <div class="card-content">
+                <h5 class="card-title">달빛조각사</h5>
         <p class="star_rating">
           <a href="#" class="on">★</a>
           <a href="#" class="on">★</a>
@@ -228,23 +308,98 @@
 
           <a href="#">★</a><a>(4/5)</a>
         </p>
-        <img src='https://ifh.cc/g/aHu3HY.png'width="220px" height="350px">
+        <img src='https://ifh.cc/g/N3bTce.png' width="210px" height="270px">
+        <div class="but">
+          <button onclick="hi()" type="button" class="btn btn-outline-success"><a
+              href="/review/18">리뷰 보기</a></button>
+  
+                </div>
+              </div>
+          </li>
+        <li>
+          <div class="card">
+            <img
+              src="https://comicthumb-phinf.pstatic.net/20160822_152/pocket_1471849279299JgBck_JPEG/___.jpg?type=m260"
+              width="245px" height="230px">
+            <div class="card-content">
+                <h5 class="card-title">이계진입 리로디드</h5>
+                <p class="star_rating">
+                  <a href="#" class="on">★</a>
+                  <a href="#" class="on">★</a>
+                  <a href="#" class="on">★</a>
+                  <a href="#" class="on">★</a>
+        
+                  <a href="#">★</a><a>(4/5)</a>
+                </p>
+                <img src='https://ifh.cc/g/IpadXc.png' width="210px" height="270px">
+        
+                <div class="but"><button onclick="hi()" type="button" class="btn btn-outline-success"><a
+                      href="/review/19">리뷰 보기</a></button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="card">
+            <img
+              src="https://comicthumb-phinf.pstatic.net/20170202_69/pocket_1486012777918sOrk0_JPEG/144147_660.jpg?type=m260"
+              width="245px" height="230px">
+            <div class="card-content">
+                <h5 class="card-title">성운을 먹는자</h5>
+                <p class="star_rating">
+                  <a href="#" class="on">★</a>
+                  <a href="#" class="on">★</a>
+                  <a href="#" class="on">★</a>
+        
+                  <a href="#">★</a>
+                  <a href="#">★</a><a>(3/5)</a>
+                </p><img src='https://ifh.cc/g/oxbDim.png' width="210px" height="270px">
+                <div class="but">
+                  <button onclick="hi()" type="button" class="btn btn-outline-success"><a
+                      href="/review/20">리뷰 보기</a></button>
+              </div>
+            </div>
+        </li>
+        <li>
+            <div class="card">
+              <img
+                src="https://comicthumb-phinf.pstatic.net/20150716_146/pocket_14370292539213Jf6y_JPEG/__1.jpg?type=m260"
+                width="245px" height="230px">
+              <div class="card-content">
+                <h5 class="card-title">세월의 돌</h5>
+        <p class="star_rating">
+          <a href="#" class="on">★</a>
+          <a href="#" class="on">★</a>
+          <a href="#" class="on">★</a>
+          <a href="#" class="on">★</a>
+
+          <a href="#">★</a><a>(4/5)</a>
+        </p>
+        <img src='https://ifh.cc/g/aHu3HY.png' width="210px" height="270px">
+
+
+        <div class="but">
+          <button onclick="hi()" type="button" class="btn btn-outline-success"><a
+              href="/review/21">리뷰 보기</a></button>
+  
+                </div>
+              </div>
+          </li>
         
 
-        <div class="but">
-        <button onclick="hi()" type="button" class="btn btn-outline-success"><a
-            href="http://127.0.0.1:5500/templates/review21.html">리뷰 보기</a></button>
-
-          </div>
+      </ul>
+    </section>
+   
 
 
 
-      </div>
-    </div>
-
-  </div>
 
 
+    <!-- Footer -->
+    <footer id="main-footer" class="grid">
+      <div>Web & Novel Reviewstore</div>
+      <div> <a href="https://github.com/seungbin-park" target="_blank">MY FIRST SITE</a></div>
+    </footer>
 
 
 </body>

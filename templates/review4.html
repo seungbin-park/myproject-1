@@ -27,6 +27,11 @@
     <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#reviews-box').html('');
+            listing();
+        });
+        
         function is_long(obj) {
             let content = $(obj).val();
             console.log(content);
@@ -38,6 +43,8 @@
         }
 
         function make_review() {
+
+            console.log('make_review');
 
             let author = $('#author').val();
             let review = $('#review').val();
@@ -55,7 +62,10 @@
             $.ajax({
                 type: "POST",
                 url: "/reviews",
-                data: { author_give: author, review_give: review },
+                data: {
+                    author_give: author, 
+                    review_give: review 
+                },
                 success: function (response) {
                     if (response['result'] == 'success') {
                         alert(response['msg']);
@@ -67,11 +77,6 @@
                 }
             })
         }
-
-        $(document).ready(function () {
-            $('#orders-box').html('');
-            listing();
-        });
 
         function listing() {
             $.ajax({
@@ -92,15 +97,13 @@
         }
 
         function make_card(author, review) {
-            let temp_html = '<tr>
-
-                < td > '+ author + '</td>\
-            <td>'+ review + '</td>\
-                                </tr > ';
-            $('#orders-box').append(temp_html);
+            let temp_html = `<tr>
+                    <td>${author}</td>
+                    <td>${review}</td>
+                </tr >`;
+            $('#reviews-box').append(temp_html);
         }
     </script>
-
     <style type="text/css">
         * {
             font-family: 'Do Hyeon', sans-serif;
