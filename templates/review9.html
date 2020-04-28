@@ -54,7 +54,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/reviews",
+                url: "/reviews/9",
                 data: { author_give: author, review_give: review },
                 success: function (response) {
                     if (response['result'] == 'success') {
@@ -76,7 +76,7 @@
         function listing() {
             $.ajax({
                 type: "GET",
-                url: "/reviews",
+                url: "/reviews/9",
                 data: {},
                 success: function (response) {
                     if (response['result'] == 'success') {

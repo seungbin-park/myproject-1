@@ -33,12 +33,13 @@ def reviews(review_num):
 
 
 
-@app.route('/reviews', methods=['POST'])
-def write_review():
+@app.route('/reviews/<int:novel_no>', methods=['POST'])
+def write_review(novel_no):
     author_receive = request.form['author_give']
     review_receive = request.form['review_give']
 
     review = {
+        'novel_no':novel_no,
         'author': author_receive,
         'review': review_receive
     }
@@ -47,9 +48,9 @@ def write_review():
     return jsonify({'result': 'success', 'msg': '리뷰가 성공적으로 작성되었습니다.'})
 
 
-@app.route('/reviews', methods=['GET'])
-def read_reviews():
-    reviews = list(db.reviews.find({}, {'_id': 0}))
+@app.route('/reviews/<int:novel_no>', methods=['GET'])
+def read_reviews(novel_no):
+    reviews = list(db.reviews.find({'novel_no': novel_no}, {'_id': 0}))
     return jsonify({'result': 'success', 'reviews': reviews})
 
 
